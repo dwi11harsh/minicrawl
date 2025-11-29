@@ -1,11 +1,9 @@
 import { Request, Response } from "express";
 import z from "zod";
-import { scrapeURL } from "../../scraper/scrapeURL";
+import { htmlToMarkdown } from "../../lib/html-to-markdown";
+import { scrapeRequestSchema } from "../../lib/validateURL";
+import { fetchPage } from "../../scraper/scrapeURL/lib/fetch";
 import { ScrapeResponse } from "../../types";
-
-const scrapeRequestSchema = z.object({
-  url: z.string().min(1, "URL cannot be empty"),
-});
 
 export const scrapeController = async (
   req: Request,
@@ -14,12 +12,16 @@ export const scrapeController = async (
   try {
     const validateURL = scrapeRequestSchema.parse(req.body);
     const url = validateURL.url;
+    const fetchedResponse = await fetchPage(url);
 
-    const document = await scrapeURL(url);
-
+    const markdown = htmlToMarkdown(fetchedResponse.html);
     const successResponse: ScrapeResponse = {
       success: true,
-      data: document,
+      data: {
+        url: fetchedResponse.url,
+        html: fetchedResponse.html,
+        markdown: markdown,
+      },
     };
 
     res.json(successResponse);
@@ -30,12 +32,11 @@ export const scrapeController = async (
         error: error.message,
       };
       res.status(400).json(zodErrorResponse);
-      return;
     }
 
-    const unknownErrorResponse: ScrapeResponse = {
+    const unknownErrorResponse = {
       success: false,
-      error: error instanceof Error ? error.message : "Internal server error",
+      error: "Internal server error",
     };
     res.status(500).json(unknownErrorResponse);
   }

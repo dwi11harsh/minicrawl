@@ -14,3 +14,14 @@ export interface ScrapeResponse {
   data?: Document;
   error?: string;
 }
+
+export interface CrawlRequest {
+  url: string;
+  limit?: number; // TODO: default later (maybe to 3 or 5)
+}
+
+export interface CrawlResponse {
+  success: boolean;
+  data?: Document[];
+  error?: string;
+}
