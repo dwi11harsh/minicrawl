@@ -11,9 +11,9 @@ export const fetchPage = async (url: string) => {
     };
   } catch (error) {
     if (error instanceof axios.AxiosError) {
-      throw new Error("Error occured fetching page: ", error);
+      throw new Error(`Error occured fetching page: ${error.message}`);
     }
 
-    throw new Error("Non-axios error while fetching page: ", error);
+    throw new Error(`Non-axios error while fetching page: ${error instanceof Error ? error.message : String(error)}`);
   }
 };

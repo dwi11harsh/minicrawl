@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import z from "zod";
-import { fetchPage } from "../../scraper/lib/fetch";
+import { scrapeURL } from "../../scraper/scrapeURL";
 import { ScrapeResponse } from "../../types";
 
 const scrapeRequestSchema = z.object({
@@ -14,15 +14,12 @@ export const scrapeController = async (
   try {
     const validateURL = scrapeRequestSchema.parse(req.body);
     const url = validateURL.url;
-    const fetchedResponse = await fetchPage(url);
+
+    const document = await scrapeURL(url);
 
     const successResponse: ScrapeResponse = {
       success: true,
-      data: {
-        url: fetchedResponse.url,
-        html: fetchedResponse.html,
-        markdown: `fake content from ${url}`,
-      },
+      data: document,
     };
 
     res.json(successResponse);
@@ -33,11 +30,12 @@ export const scrapeController = async (
         error: error.message,
       };
       res.status(400).json(zodErrorResponse);
+      return;
     }
 
-    const unknownErrorResponse = {
+    const unknownErrorResponse: ScrapeResponse = {
       success: false,
-      error: "Internal server error",
+      error: error instanceof Error ? error.message : "Internal server error",
     };
     res.status(500).json(unknownErrorResponse);
   }
