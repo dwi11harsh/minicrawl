@@ -1,10 +1,8 @@
 import { Request, Response } from "express";
 import z from "zod";
-import { htmlToMarkdown } from "../../lib/html-to-markdown";
 import logger from "../../lib/logger";
-import { extractMetadata } from "../../lib/metadata";
 import { scrapeRequestSchema } from "../../lib/validateURL";
-import { fetchPage } from "../../scraper/scrapeURL/lib/fetch";
+import { scrapeURL } from "../../scraper/scrapeURL";
 import { ScrapeResponse } from "../../types";
 
 export const scrapeController = async (
@@ -17,19 +15,15 @@ export const scrapeController = async (
     const validateURL = scrapeRequestSchema.parse(req.body);
     const url = validateURL.url;
 
-    const fetchedResponse = await fetchPage(url);
-
-    const metadata = extractMetadata(fetchedResponse.html, fetchedResponse.url);
-
-    const markdown = htmlToMarkdown(fetchedResponse.html);
+    const document = await scrapeURL(url);
 
     const successResponse: ScrapeResponse = {
       success: true,
       data: {
-        url: fetchedResponse.url,
-        html: fetchedResponse.html,
-        ...(markdown && { markdown }),
-        ...(metadata && { metadata }),
+        url: document.url,
+        html: document.html,
+        ...(document.markdown && { markdown: document.markdown }),
+        ...(document.metadata && { metadata: document.metadata }),
       },
     };
 

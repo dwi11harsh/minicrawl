@@ -1,4 +1,5 @@
 import { htmlToMarkdown } from "../../lib/html-to-markdown";
+import { extractMetadata } from "../../lib/metadata";
 import { Document } from "../../types";
 import { fetchPage } from "./lib/fetch";
 import { extractLinks } from "./lib/links";
@@ -6,11 +7,13 @@ import { extractLinks } from "./lib/links";
 export const scrapeURL = async (url: string): Promise<Document> => {
   const response = await fetchPage(url);
   const markdown = htmlToMarkdown(response.html);
+  const metadata = extractMetadata(response.html, response.url);
 
   return {
     url: response.url,
     html: response.html,
     markdown: markdown,
+    metadata: metadata,
   };
 };
 
