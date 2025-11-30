@@ -1,10 +1,12 @@
 // main server entry point
 import bodyParser from "body-parser";
+import "dotenv/config";
 import express, { Application, NextFunction, Request, Response } from "express";
 import logger from "./lib/logger";
 import v1router from "./routes/v1";
 
-const port = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3002;
+const HOST = process.env.HOST || "0.0.0.0";
 
 const app: Application = express();
 app.use(bodyParser.json());
@@ -26,6 +28,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-app.listen(port, () => {
-  logger.info(`server running on port: ${port}`);
+app.listen(PORT, () => {
+  logger.info(`server running on port: ${PORT}`);
 });
