@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import z from "zod";
 import { htmlToMarkdown } from "../../lib/html-to-markdown";
 import logger from "../../lib/logger";
+import { extractMetadata } from "../../lib/metadata";
 import { scrapeRequestSchema } from "../../lib/validateURL";
 import { fetchPage } from "../../scraper/scrapeURL/lib/fetch";
 import { ScrapeResponse } from "../../types";
@@ -18,6 +19,8 @@ export const scrapeController = async (
 
     const fetchedResponse = await fetchPage(url);
 
+    const metadata = extractMetadata(fetchedResponse.html, fetchedResponse.url);
+
     const markdown = htmlToMarkdown(fetchedResponse.html);
 
     const successResponse: ScrapeResponse = {
@@ -25,7 +28,8 @@ export const scrapeController = async (
       data: {
         url: fetchedResponse.url,
         html: fetchedResponse.html,
-        markdown: markdown,
+        ...(markdown && { markdown }),
+        ...(metadata && { metadata }),
       },
     };
 
