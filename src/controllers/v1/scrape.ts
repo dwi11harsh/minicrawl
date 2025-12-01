@@ -3,6 +3,7 @@ import z from "zod";
 import logger from "../../lib/logger";
 import { scrapeRequestSchema } from "../../lib/validateURL";
 import { scrapeURL } from "../../scraper/scrapeURL";
+import { extractLinks } from "../../scraper/scrapeURL/lib/links";
 import { ScrapeResponse } from "../../types";
 
 export const scrapeController = async (
@@ -14,17 +15,33 @@ export const scrapeController = async (
 
     const validateURL = scrapeRequestSchema.parse(req.body);
     const url = validateURL.url;
+    const formats = validateURL.formats ?? ["markdown"];
 
     const document = await scrapeURL(url);
 
+    // response data based on requested formats
+    const responseData: ScrapeResponse["data"] = {
+      url: document.url,
+    };
+
+    // html if formats includes "html"
+    if (formats.includes("html") && document.html) {
+      responseData.html = document.html;
+    }
+
+    // markdown if formats includes "markdown"
+    if (formats.includes("markdown") && document.markdown) {
+      responseData.markdown = document.markdown;
+    }
+
+    // include links if formats includes "links"
+    if (formats.includes("links") && document.html) {
+      responseData.links = extractLinks(document.url, document.html);
+    }
+
     const successResponse: ScrapeResponse = {
       success: true,
-      data: {
-        url: document.url,
-        html: document.html,
-        ...(document.markdown && { markdown: document.markdown }),
-        ...(document.metadata && { metadata: document.metadata }),
-      },
+      data: responseData,
     };
 
     logger.info("initiating scrape response");
