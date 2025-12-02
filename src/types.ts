@@ -4,10 +4,13 @@ export interface Document {
   markdown?: string;
   links?: string[];
   metadata?: Metadata;
+  screenshot?: string;
 }
 
 export interface ScrapeRequest {
   url: string;
+  screenshot?: boolean;
+  screenshotFullPage?: boolean;
 }
 
 export interface ScrapeResponse {

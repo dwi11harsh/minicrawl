@@ -1,5 +1,6 @@
 import { ScrapeError, TimeoutError, ValidationError } from "@/lib/error";
 import logger from "@/lib/logger";
+import { takeScreenshot } from "@/lib/screenshot";
 import { scrapeRequestSchema } from "@/lib/validateURL";
 import { scrapeURL } from "@/scraper/scrapeURL";
 import { extractLinks } from "@/scraper/scrapeURL/lib/links";
@@ -17,6 +18,9 @@ export const scrapeController = async (
     const validateURL = scrapeRequestSchema.parse(req.body);
     const url = validateURL.url;
     const formats = validateURL.formats ?? ["markdown"];
+    const screenshot: boolean | undefined = validateURL.screenshot;
+    const screenshotFullPage: boolean | undefined =
+      validateURL.screenshotFullPage;
 
     const document = await scrapeURL(url, validateURL.engine);
 
@@ -38,6 +42,13 @@ export const scrapeController = async (
     // include links if formats includes "links"
     if (formats.includes("links") && document.html) {
       responseData.links = extractLinks(document.url, document.html);
+    }
+
+    // include screenshots of the pages
+    if (screenshot) {
+      responseData.screenshot = await takeScreenshot(url, {
+        fullPage: screenshotFullPage,
+      });
     }
 
     const successResponse: ScrapeResponse = {

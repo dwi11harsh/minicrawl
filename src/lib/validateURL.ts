@@ -74,6 +74,8 @@ export const scrapeRequestSchema = z.object({
   headers: z.record(z.string(), z.string()).optional(),
   timeout: z.number().optional(),
   engine: z.enum(["playwright", "fetch"]).optional(),
+  screenshot: z.boolean().optional(),
+  screenshotFullPage: z.boolean().optional(),
 });
 
 export const crawlRequestSchema = z.object({
