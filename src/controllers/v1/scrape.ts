@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import z from "zod";
+import { ScrapeError, TimeoutError, ValidationError } from "../../lib/error";
 import logger from "../../lib/logger";
 import { scrapeRequestSchema } from "../../lib/validateURL";
 import { scrapeURL } from "../../scraper/scrapeURL";
@@ -48,22 +49,59 @@ export const scrapeController = async (
 
     res.json(successResponse);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      logger.error("zod error occured at scrapeController: ", error);
-
-      const zodErrorResponse = {
+    if (error instanceof ValidationError) {
+      logger.error("validation error at scrapeController: ", error);
+      res.status(400).json({
         success: false,
         error: error.message,
-      };
-      res.status(400).json(zodErrorResponse);
+        code: "VALIDATION_ERROR",
+        field: error.field,
+      });
+      return;
     }
 
-    logger.error("unknown error occured at scrapeController: ", error);
+    // Zod
+    if (error instanceof z.ZodError) {
+      logger.error("zod error at scrapeController: ", error);
+      res.status(400).json({
+        success: false,
+        error: error.message || "Validation failed",
+        code: "VALIDATION_ERROR",
+      });
+      return;
+    }
 
-    const unknownErrorResponse = {
+    // Timeout
+    if (error instanceof TimeoutError) {
+      logger.error("timeout error at scrapeController: ", error);
+      res.status(408).json({
+        success: false,
+        error: error.message,
+        code: "TIMEOUT",
+        url: error.url,
+      });
+      return;
+    }
+
+    // Scrape
+    if (error instanceof ScrapeError) {
+      logger.error("scrape error at scrapeController: ", error);
+      const statusCode = error.statusCode ?? 500;
+      res.status(statusCode).json({
+        success: false,
+        error: error.message,
+        code: "SCRAPE_ERROR",
+        url: error.url,
+      });
+      return;
+    }
+
+    // Unknown
+    logger.error("unknown error at scrapeController: ", error);
+    res.status(500).json({
       success: false,
       error: "Internal server error",
-    };
-    res.status(500).json(unknownErrorResponse);
+      code: "INTERNAL_ERROR",
+    });
   }
 };

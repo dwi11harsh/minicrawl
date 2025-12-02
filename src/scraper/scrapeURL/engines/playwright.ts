@@ -1,4 +1,5 @@
 import { Browser, chromium, Page } from "playwright";
+import { ScrapeError, TimeoutError } from "../../../lib/error";
 import logger from "../../../lib/logger";
 
 export const scrapeWithPlaywright = async (
@@ -30,10 +31,24 @@ export const scrapeWithPlaywright = async (
     return { html, url };
   } catch (err) {
     if (browser) {
-      await browser.close().catch(() => {
-        // ignore errors during browser close
+      await browser.close().catch(() => {});
+    }
+
+    const timeout = options?.timeout ?? 30000;
+    const error = err instanceof Error ? err : new Error(String(err));
+
+    if (error.name === "TimeoutError") {
+      throw new TimeoutError(`Page load exceeded ${timeout}ms`, {
+        url,
+        timeoutMs: timeout,
+        cause: error,
       });
     }
-    throw new Error(`Playwright scraping failed for ${url}: ${String(err)}`);
+
+    throw new ScrapeError(`Playwright scraping failed for ${url}`, {
+      url,
+      retryable: true,
+      cause: error,
+    });
   }
 };
