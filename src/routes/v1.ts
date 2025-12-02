@@ -1,7 +1,7 @@
 import express from "express";
-import { crawlController } from "../controllers/v1/crawl";
-import { crawlStatusController } from "../controllers/v1/crawl-status";
-import { scrapeController } from "../controllers/v1/scrape";
+import { crawlController } from "@/controllers/v1/crawl";
+import { crawlStatusController } from "@/controllers/v1/crawl-status";
+import { scrapeController } from "@/controllers/v1/scrape";
 import { wrap } from "./shared";
 
 const v1router = express.Router();

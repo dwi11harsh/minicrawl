@@ -1,5 +1,5 @@
-import logger from "../../../lib/logger";
-import { fetchPage } from "../lib/fetch";
+import logger from "@/lib/logger";
+import { fetchPage } from "@/scraper/scrapeURL/lib/fetch";
 import { scrapeWithPlaywright } from "./playwright";
 
 export type Engine = "fetch" | "playwright";

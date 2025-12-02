@@ -14,13 +14,16 @@
     "moduleResolution": "NodeNext",
     "strictNullChecks": true,
 
+    "baseUrl": "./src",
+
     "inlineSources": true,
 
     "typeRoots": ["./src/types", "./node_modules/@types"],
     "paths": {
       "x402": ["./src/types/x402"],
       "x402/*": ["./src/types/x402"],
-      "x402-express": ["./src/types/x402"]
+      "x402-express": ["./src/types/x402"],
+      "@/*": ["*"]
     }
   }
 }

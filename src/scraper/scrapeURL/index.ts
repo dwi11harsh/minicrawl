@@ -1,8 +1,8 @@
-import { htmlToMarkdown } from "../../lib/html-to-markdown";
-import { updateJob } from "../../lib/job-store";
-import logger from "../../lib/logger";
-import { extractMetadata } from "../../lib/metadata";
-import { Document } from "../../types";
+import { htmlToMarkdown } from "@/lib/html-to-markdown";
+import { updateJob } from "@/lib/job-store";
+import logger from "@/lib/logger";
+import { extractMetadata } from "@/lib/metadata";
+import { Document } from "@/types";
 import { Engine, scrapeWithEngine } from "./engines";
 import { extractLinks } from "./lib/links";
 

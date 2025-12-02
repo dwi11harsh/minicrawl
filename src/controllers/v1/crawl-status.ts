@@ -1,7 +1,7 @@
+import { getJob } from "@/lib/job-store";
+import logger from "@/lib/logger";
 import { Request, Response } from "express";
 import { validate as validateUUID } from "uuid";
-import { getJob } from "../../lib/job-store";
-import logger from "../../lib/logger";
 
 export const crawlStatusController = async (req: Request, res: Response) => {
   const jobId = req.params.jobId;

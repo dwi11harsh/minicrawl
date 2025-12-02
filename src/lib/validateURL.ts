@@ -1,6 +1,6 @@
 // URL validation
+import { ValidationError } from "@/lib/error";
 import { z } from "zod";
-import { ValidationError } from "./error";
 
 // URL validation function
 export const validateURL = (url: string): void => {

@@ -1,11 +1,11 @@
+import { ScrapeError, TimeoutError, ValidationError } from "@/lib/error";
+import logger from "@/lib/logger";
+import { scrapeRequestSchema } from "@/lib/validateURL";
+import { scrapeURL } from "@/scraper/scrapeURL";
+import { extractLinks } from "@/scraper/scrapeURL/lib/links";
+import { ScrapeResponse } from "@/types";
 import { Request, Response } from "express";
 import z from "zod";
-import { ScrapeError, TimeoutError, ValidationError } from "../../lib/error";
-import logger from "../../lib/logger";
-import { scrapeRequestSchema } from "../../lib/validateURL";
-import { scrapeURL } from "../../scraper/scrapeURL";
-import { extractLinks } from "../../scraper/scrapeURL/lib/links";
-import { ScrapeResponse } from "../../types";
 
 export const scrapeController = async (
   req: Request,

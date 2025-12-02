@@ -1,6 +1,6 @@
+import { ScrapeError, TimeoutError } from "@/lib/error";
+import logger from "@/lib/logger";
 import { Browser, chromium, Page } from "playwright";
-import { ScrapeError, TimeoutError } from "../../../lib/error";
-import logger from "../../../lib/logger";
 
 export const scrapeWithPlaywright = async (
   url: string,

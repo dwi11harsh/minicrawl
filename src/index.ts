@@ -2,8 +2,8 @@
 import bodyParser from "body-parser";
 import "dotenv/config";
 import express, { Application, NextFunction, Request, Response } from "express";
-import logger from "./lib/logger";
-import v1router from "./routes/v1";
+import logger from "@/lib/logger";
+import v1router from "@/routes/v1";
 
 const PORT = process.env.PORT || 3002;
 const HOST = process.env.HOST || "0.0.0.0";

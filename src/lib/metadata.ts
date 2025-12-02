@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio";
-import { Metadata } from "../types";
+import { Metadata } from "@/types";
 
 export const extractMetadata = (html: string, baseUrl: string): Metadata => {
   const $ = cheerio.load(html);

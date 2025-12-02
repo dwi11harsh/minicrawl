@@ -1,5 +1,5 @@
+import { Document } from "@/types";
 import { v4 as uuidv4 } from "uuid";
-import { Document } from "../types";
 
 interface JobType {
   id: string;

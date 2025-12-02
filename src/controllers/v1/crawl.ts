@@ -1,10 +1,10 @@
+import { ScrapeError, TimeoutError, ValidationError } from "@/lib/error";
+import { createJob } from "@/lib/job-store";
+import logger from "@/lib/logger";
+import { crawlRequestSchema } from "@/lib/validateURL";
+import { crawlURL } from "@/scraper/scrapeURL";
 import { Request, Response } from "express";
 import { z } from "zod";
-import { ScrapeError, TimeoutError, ValidationError } from "../../lib/error";
-import { createJob } from "../../lib/job-store";
-import logger from "../../lib/logger";
-import { crawlRequestSchema } from "../../lib/validateURL";
-import { crawlURL } from "../../scraper/scrapeURL";
 
 export const crawlController = async (
   req: Request,
