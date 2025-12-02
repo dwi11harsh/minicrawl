@@ -1,15 +1,18 @@
 // main server entry point
+import logger from "@/lib/logger";
+import v1router from "@/routes/v1";
 import bodyParser from "body-parser";
 import "dotenv/config";
 import express, { Application, NextFunction, Request, Response } from "express";
-import logger from "@/lib/logger";
-import v1router from "@/routes/v1";
+import { requestTimingMiddleware } from "./routes/shared";
 
 const PORT = process.env.PORT || 3002;
 const HOST = process.env.HOST || "0.0.0.0";
 
 const app: Application = express();
 app.use(bodyParser.json());
+
+app.use("/v1", requestTimingMiddleware("v1"));
 
 app.use("/v1", v1router);
 
