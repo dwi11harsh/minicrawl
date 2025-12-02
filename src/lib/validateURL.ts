@@ -15,4 +15,5 @@ export const crawlRequestSchema = z.object({
     .nonnegative()
     .min(1, "call scrape endpoint for this usecase")
     .max(10, "too high to crawl with depth more than 10"),
+  formats: z.array(z.enum(["markdown", "html", "links"])).optional(),
 });

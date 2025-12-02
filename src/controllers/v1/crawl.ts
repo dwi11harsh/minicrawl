@@ -16,16 +16,15 @@ export const crawlController = async (
 
     const url = validateReqBody.url;
     const limit = validateReqBody.limit;
+    const formats = validateReqBody.formats ?? ["markdown"];
 
-    const newJobId = createJob(url, limit);
+    const newJobId = createJob(url, limit, formats);
 
     logger.info("sending immediate crawl id");
-    res
-      .json({
-        id: newJobId,
-        success: true,
-      })
-      .status(201);
+    res.status(201).json({
+      id: newJobId,
+      success: true,
+    });
 
     logger.info("starting crawl process with id: ", newJobId);
     setImmediate(async () => {
@@ -35,6 +34,7 @@ export const crawlController = async (
         logger.error("background crawl error: ", e);
       }
     });
+    return;
   } catch (error) {
     if (error instanceof z.ZodError) {
       logger.error("zod error occured at crawlController: ", error);
@@ -44,6 +44,7 @@ export const crawlController = async (
         error: error.message,
       };
       res.status(400).json(zodErrorResponse);
+      return;
     }
 
     logger.error("unknown error occured at crawlController: ", error);
@@ -53,5 +54,6 @@ export const crawlController = async (
       error: "Internal server error",
     };
     res.status(500).json(unknownErrorResponse);
+    return;
   }
 };

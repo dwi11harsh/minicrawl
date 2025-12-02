@@ -6,16 +6,22 @@ interface JobType {
   status: "scraping" | "completed" | "failed";
   url: string;
   limit: number;
+  formats?: string[];
   completed?: number;
   total?: number;
   results?: Document[];
   error?: string;
   createdAt: Date;
+  failedUrls?: Array<{ url: string; error: string }>;
 }
 
 const jobs = new Map<string, JobType>();
 
-export const createJob = (url: string, limit: number): string => {
+export const createJob = (
+  url: string,
+  limit: number,
+  formats?: string[]
+): string => {
   const jobId = uuidv4();
 
   const newJob: JobType = {
@@ -23,6 +29,7 @@ export const createJob = (url: string, limit: number): string => {
     status: "scraping",
     url,
     limit,
+    formats,
     createdAt: new Date(),
   };
 

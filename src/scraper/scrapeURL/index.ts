@@ -1,5 +1,6 @@
 import { htmlToMarkdown } from "../../lib/html-to-markdown";
 import { updateJob } from "../../lib/job-store";
+import logger from "../../lib/logger";
 import { extractMetadata } from "../../lib/metadata";
 import { Document } from "../../types";
 import { fetchPage } from "./lib/fetch";
@@ -27,6 +28,16 @@ export const crawlURL = async (
     const visited = new Set<string>();
     const queue: string[] = [startURL];
     const results: Document[] = [];
+    const failedUrls: Array<{ url: string; error: string }> = [];
+
+    // extract base domain for filtering
+    let baseDomain: string;
+    try {
+      const startURLObj = new URL(startURL);
+      baseDomain = startURLObj.hostname;
+    } catch {
+      baseDomain = "";
+    }
 
     while (queue.length != 0 && results.length < limit) {
       const url = queue.shift()!;
@@ -39,39 +50,64 @@ export const crawlURL = async (
       // mark as visited
       visited.add(url);
 
-      // scrape it
-      const document = await scrapeURL(url);
+      try {
+        // scrape it
+        const document = await scrapeURL(url);
 
-      // update the job to show accurate results
-      updateJob(jobId, {
-        completed: results.length,
-        total: queue.length + results.length,
-      });
+        results.push(document);
 
-      results.push(document);
-
-      if (document.html) {
-        const scrapedURLs: string[] = extractLinks(url, document.html);
-        for (const link of scrapedURLs) {
-          if (!visited.has(link) && !queue.includes(link)) {
-            queue.push(link);
+        // add new links to queue before updating job status
+        if (document.html) {
+          const scrapedURLs: string[] = extractLinks(url, document.html);
+          for (const link of scrapedURLs) {
+            // filter to same domain only
+            try {
+              const linkObj = new URL(link);
+              if (
+                linkObj.hostname === baseDomain &&
+                !visited.has(link) &&
+                !queue.includes(link)
+              ) {
+                queue.push(link);
+              }
+            } catch {
+              // invalid URL, skip
+            }
           }
         }
+      } catch (e) {
+        logger.info(`Failed to scrape ${url}:`, e.message);
+        failedUrls.push({
+          url: url,
+          error: e instanceof Error ? e.message : String(e),
+        });
       }
+
+      // update the job to show accurate number of results
+      // only count URLs that are actually crawlable (same domain)
+      const crawlableTotal = queue.length + visited.size;
+      updateJob(jobId, {
+        completed: results.length,
+        total: crawlableTotal,
+        failedUrls,
+      });
     }
 
     // update the job with all the results
     updateJob(jobId, {
       status: "completed",
       results: results,
+      failedUrls,
+      completed: results.length,
+      total: visited.size,
     });
 
     return;
   } catch (e) {
-    // update the job to show the error that occured
+    // update the job to show the error that occurred
     updateJob(jobId, {
       status: "failed",
-      error: e.message,
+      error: e instanceof Error ? e.message : String(e),
     });
   }
 };
