@@ -22,58 +22,101 @@ export const scrapeURL = async (url: string): Promise<Document> => {
 export const crawlURL = async (
   startURL: string,
   limit: number,
-  jobId: string
+  jobId: string,
+  onlySameDomain: boolean = true
 ): Promise<void> => {
   try {
+    let normalizedStartURL: string;
+
+    try {
+      const startURLObj = new URL(startURL);
+      startURLObj.hash = "";
+
+      normalizedStartURL = startURLObj.href;
+    } catch {
+      normalizedStartURL = startURL;
+    }
+
     const visited = new Set<string>();
-    const queue: string[] = [startURL];
+    const queue: string[] = [normalizedStartURL];
     const results: Document[] = [];
     const failedUrls: Array<{ url: string; error: string }> = [];
 
-    // extract base domain for filtering
     let baseDomain: string;
     try {
-      const startURLObj = new URL(startURL);
+      const startURLObj = new URL(normalizedStartURL);
+
       baseDomain = startURLObj.hostname;
     } catch {
       baseDomain = "";
     }
 
+    logger.info(
+      `Starting crawl for ${normalizedStartURL} with base domain: ${baseDomain}, limit: ${limit}`
+    );
+
     while (queue.length != 0 && results.length < limit) {
       const url = queue.shift()!;
 
-      // check if already visited
       if (visited.has(url)) {
+        logger.info(`Skipping already visited: ${url}`);
         continue;
       }
 
-      // mark as visited
       visited.add(url);
+      logger.info(
+        `Processing URL ${visited.size}/${queue.length + visited.size}: ${url}`
+      );
 
       try {
-        // scrape it
         const document = await scrapeURL(url);
 
         results.push(document);
+        logger.info(
+          `Successfully scraped ${url}, total results: ${results.length}`
+        );
 
-        // add new links to queue before updating job status
         if (document.html) {
-          const scrapedURLs: string[] = extractLinks(url, document.html);
+          const scrapedURLs: string[] = extractLinks(
+            document.url,
+            document.html
+          );
+
+          logger.info(
+            `Extracted ${scrapedURLs.length} links from ${document.url}`
+          );
+
+          let addedCount = 0;
           for (const link of scrapedURLs) {
-            // filter to same domain only
             try {
               const linkObj = new URL(link);
-              if (
-                linkObj.hostname === baseDomain &&
-                !visited.has(link) &&
-                !queue.includes(link)
-              ) {
+              const isSameDomain = linkObj.hostname === baseDomain;
+              const isNotVisited = !visited.has(link);
+              const isNotInQueue = !queue.includes(link);
+
+              const shouldAdd = onlySameDomain
+                ? linkObj.hostname === baseDomain &&
+                  isNotVisited &&
+                  isNotInQueue
+                : isNotVisited && isNotInQueue;
+
+              if (shouldAdd) {
                 queue.push(link);
+                addedCount++;
+              } else {
+                if (onlySameDomain && linkObj.hostname !== baseDomain) {
+                  logger.info(
+                    `Filtered out external link: ${link} (domain: ${linkObj.hostname})`
+                  );
+                }
               }
             } catch {
               // invalid URL, skip
             }
           }
+          logger.info(
+            `Added ${addedCount} new URLs to queue. Queue size: ${queue.length}`
+          );
         }
       } catch (e) {
         logger.info(`Failed to scrape ${url}:`, e.message);
@@ -83,8 +126,6 @@ export const crawlURL = async (
         });
       }
 
-      // update the job to show accurate number of results
-      // only count URLs that are actually crawlable (same domain)
       const crawlableTotal = queue.length + visited.size;
       updateJob(jobId, {
         completed: results.length,
@@ -93,7 +134,10 @@ export const crawlURL = async (
       });
     }
 
-    // update the job with all the results
+    logger.info(
+      `Crawl completed. Results: ${results.length}, Visited: ${visited.size}, Failed: ${failedUrls.length}`
+    );
+
     updateJob(jobId, {
       status: "completed",
       results: results,
@@ -104,7 +148,6 @@ export const crawlURL = async (
 
     return;
   } catch (e) {
-    // update the job to show the error that occurred
     updateJob(jobId, {
       status: "failed",
       error: e instanceof Error ? e.message : String(e),

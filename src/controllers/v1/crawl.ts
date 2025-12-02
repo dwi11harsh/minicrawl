@@ -17,6 +17,7 @@ export const crawlController = async (
     const url = validateReqBody.url;
     const limit = validateReqBody.limit;
     const formats = validateReqBody.formats ?? ["markdown"];
+    const onlySameDomain = validateReqBody.onlySameDomain;
 
     const newJobId = createJob(url, limit, formats);
 
@@ -29,11 +30,12 @@ export const crawlController = async (
     logger.info("starting crawl process with id: ", newJobId);
     setImmediate(async () => {
       try {
-        await crawlURL(url, limit, newJobId);
+        await crawlURL(url, limit, newJobId, onlySameDomain);
       } catch (e) {
         logger.error("background crawl error: ", e);
       }
     });
+
     return;
   } catch (error) {
     if (error instanceof z.ZodError) {
