@@ -17,7 +17,7 @@ export const scrapeController = async (
     const url = validateURL.url;
     const formats = validateURL.formats ?? ["markdown"];
 
-    const document = await scrapeURL(url);
+    const document = await scrapeURL(url, validateURL.engine);
 
     // response data based on requested formats
     const responseData: ScrapeResponse["data"] = {

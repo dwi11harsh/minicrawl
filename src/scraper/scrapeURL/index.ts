@@ -3,11 +3,14 @@ import { updateJob } from "../../lib/job-store";
 import logger from "../../lib/logger";
 import { extractMetadata } from "../../lib/metadata";
 import { Document } from "../../types";
-import { fetchPage } from "./lib/fetch";
+import { Engine, scrapeWithEngine } from "./engines";
 import { extractLinks } from "./lib/links";
 
-export const scrapeURL = async (url: string): Promise<Document> => {
-  const response = await fetchPage(url);
+export const scrapeURL = async (
+  url: string,
+  engine: Engine = "fetch"
+): Promise<Document> => {
+  const response = await scrapeWithEngine(url, engine);
   const markdown = htmlToMarkdown(response.html);
   const metadata = extractMetadata(response.html, response.url);
 
