@@ -2,6 +2,7 @@ import logger from '@repo/logger';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import express, { type ErrorRequestHandler, type Express } from 'express';
+import { requestTimingMiddleware } from './shared/requestTiming.js';
 
 export const createServer = (): Express => {
 	const app = express();
@@ -9,6 +10,7 @@ export const createServer = (): Express => {
 		// .use(urlencoded({ extended: true }))
 		.use(bodyParser.json())
 		.use(cors())
+		.use(requestTimingMiddleware('v1'))
 		.get('/status', (_, res) => {
 			return res.json({ ok: true });
 		});
