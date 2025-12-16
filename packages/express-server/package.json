@@ -1,0 +1,22 @@
+{
+	"name": "@repo/express-server",
+	"type": "module",
+	"private": true,
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"devDependencies": {
+		"@types/body-parser": "1.19.6",
+		"@types/bun": "latest",
+		"@types/cors": "2.8.19",
+		"@types/express": "5.0.6"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"body-parser": "2.2.1",
+		"cors": "2.8.5",
+		"express": "5.2.1"
+	}
+}
