@@ -4,7 +4,7 @@ const PORT = process.env.PORT || 3001;
 
 const app = createServer();
 
-app.get('/helth', (req, res) => {
+app.get('/health', (req, res) => {
 	res.json({ health: 'OK' }).status(200);
 });
 

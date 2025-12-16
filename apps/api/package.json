@@ -20,6 +20,8 @@
 		"@repo/eslint-config": "*",
 		"@repo/typescript-config": "*",
 		"@repo/express-server": "workspace:*",
+		"@repo/dotenv": "workspace:*",
+		"@repo/error": "workspace:*",
 		"tsup": "8.5.1"
 	}
 }
