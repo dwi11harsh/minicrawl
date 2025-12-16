@@ -1,0 +1,17 @@
+{
+	"name": "@repo/error",
+	"type": "module",
+	"private": true,
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"@repo/logger": "workspace:*"
+	}
+}
