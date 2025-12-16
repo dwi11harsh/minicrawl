@@ -9,7 +9,10 @@ export class EnvError extends Error {
 		super(message);
 
 		logger.error(`ENV VARIABLE: ${field} not found: `, message);
+
 		this.name = 'Env Error';
+		this.message = message;
+
 		Object.setPrototypeOf(this, EnvError.prototype);
 	}
 }

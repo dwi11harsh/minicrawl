@@ -1,6 +1,6 @@
 import { wrap } from '@repo/express-server';
 import express, { Request, Response } from 'express';
-import { scrapeController } from '../scraper';
+import { scrapeController } from '../scrapeController';
 
 export const v1Router = express.Router();
 

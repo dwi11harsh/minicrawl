@@ -23,6 +23,7 @@
 		"@repo/express-server": "workspace:*",
 		"@repo/dotenv": "workspace:*",
 		"@repo/error": "workspace:*",
+		"@repo/scraper": "workspace:*",
 		"tsup": "8.5.1"
 	}
 }

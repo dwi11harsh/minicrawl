@@ -1,2 +1,3 @@
-export * from './lib/envError.js';
-export * from './lib/validationError.js';
+export * from './lib/envError';
+export * from './lib/scrapeError';
+export * from './lib/validationError';

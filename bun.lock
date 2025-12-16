@@ -19,6 +19,7 @@
         "@repo/error": "workspace:*",
         "@repo/eslint-config": "workspace:*",
         "@repo/express-server": "workspace:*",
+        "@repo/scraper": "workspace:*",
         "@repo/typescript-config": "workspace:*",
         "@repo/zod": "workspace:*",
         "tsup": "8.5.1",
@@ -132,6 +133,26 @@
       "name": "@repo/logger",
       "dependencies": {
         "winston": "3.19.0",
+      },
+      "peerDependencies": {
+        "typescript": "^5",
+      },
+    },
+    "packages/scraper": {
+      "name": "@repo/scraper",
+      "devDependencies": {
+        "@repo/error": "workspace:*",
+        "@repo/types": "workspace:*",
+        "@types/bun": "latest",
+      },
+      "peerDependencies": {
+        "typescript": "^5",
+      },
+    },
+    "packages/types": {
+      "name": "@repo/types",
+      "devDependencies": {
+        "@types/bun": "latest",
       },
       "peerDependencies": {
         "typescript": "^5",
@@ -353,6 +374,10 @@
     "@repo/express-server": ["@repo/express-server@workspace:packages/express-server"],
 
     "@repo/logger": ["@repo/logger@workspace:packages/logger"],
+
+    "@repo/scraper": ["@repo/scraper@workspace:packages/scraper"],
+
+    "@repo/types": ["@repo/types@workspace:packages/types"],
 
     "@repo/typescript-config": ["@repo/typescript-config@workspace:packages/typescript-config"],
 
