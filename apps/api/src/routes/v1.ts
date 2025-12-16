@@ -1,5 +1,6 @@
 import { wrap } from '@repo/express-server';
 import express, { Request, Response } from 'express';
+import { scrapeController } from '../scraper';
 
 export const v1Router = express.Router();
 
@@ -11,4 +12,4 @@ v1Router.get(
 	}),
 );
 
-// v1Router.post("/scrape", wrap())
+v1Router.post('/scrape', wrap(scrapeController));

@@ -17,8 +17,9 @@
 		"typescript": "^5"
 	},
 	"dependencies": {
-		"@repo/eslint-config": "*",
-		"@repo/typescript-config": "*",
+		"@repo/eslint-config": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"@repo/zod": "workspace:*",
 		"@repo/express-server": "workspace:*",
 		"@repo/dotenv": "workspace:*",
 		"@repo/error": "workspace:*",

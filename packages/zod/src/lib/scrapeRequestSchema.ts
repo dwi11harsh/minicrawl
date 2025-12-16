@@ -1,5 +1,6 @@
+import { ValidationError } from '@repo/error';
 import z from 'zod';
-import { validateURL } from './urlSchema.js';
+import { validateURL } from './urlSchema';
 
 const urlSchema = z
 	.string()
@@ -20,5 +21,29 @@ const urlSchema = z
 	);
 
 export const scrapeRequestSchema = z.object({
-	url: urlSchema,
+	url: z.url(),
 });
+
+export const ValidateScrapeRequestSchema = (request: any) => {
+	try {
+		const parseResult = scrapeRequestSchema.safeParse(request);
+		if (parseResult.success) {
+			return parseResult.data;
+		} else {
+			throw new ValidationError('Invalid URL format', {
+				field: 'url',
+				providedValue: request,
+				cause: parseResult.error,
+			});
+		}
+	} catch (err) {
+		if (err instanceof ValidationError) {
+			throw err;
+		}
+		throw new ValidationError('Invalid URL format', {
+			field: 'url',
+			providedValue: request,
+			cause: err instanceof Error ? err : undefined,
+		});
+	}
+};

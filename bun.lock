@@ -17,9 +17,10 @@
       "dependencies": {
         "@repo/dotenv": "workspace:*",
         "@repo/error": "workspace:*",
-        "@repo/eslint-config": "*",
+        "@repo/eslint-config": "workspace:*",
         "@repo/express-server": "workspace:*",
-        "@repo/typescript-config": "*",
+        "@repo/typescript-config": "workspace:*",
+        "@repo/zod": "workspace:*",
         "tsup": "8.5.1",
       },
       "devDependencies": {
