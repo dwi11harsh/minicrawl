@@ -3,8 +3,7 @@
 	"type": "module",
 	"private": true,
 	"exports": {
-		".": "./src/index.ts",
-		"./wrap": "./src/shared/wrap.ts"
+		".": "./src/index.ts"
 	},
 	"devDependencies": {
 		"@types/body-parser": "1.19.6",

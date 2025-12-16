@@ -3,7 +3,9 @@
 	"compilerOptions": {
 		"lib": ["ES2015"],
 		"outDir": "./dist",
-		"types": ["bun"]
+		"types": ["bun"],
+		"module": "ESNext",
+		"moduleResolution": "Bundler"
 	},
 	"include": ["."],
 	"exclude": ["node_modules", "dist"]
