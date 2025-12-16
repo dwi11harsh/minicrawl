@@ -1,0 +1,19 @@
+{
+	"name": "@repo/zod",
+	"type": "module",
+	"private": true,
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"@repo/error": "workspace:*",
+		"dotenv": "17.2.3",
+		"zod": "4.2.1"
+	}
+}

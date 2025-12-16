@@ -10,3 +10,5 @@ v1Router.get(
 		return;
 	}),
 );
+
+// v1Router.post("/scrape", wrap())
