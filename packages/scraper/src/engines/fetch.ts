@@ -1,7 +1,7 @@
 import { Document } from '@repo/types';
 import axios from 'axios';
 
-export const axiosEngine = async (
+export const fetchWithAxios = async (
 	url: string,
 	options?: {
 		timeout?: number;
