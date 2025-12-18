@@ -4,7 +4,9 @@ import { Request, Response } from 'express';
 
 export const scrapeController = async (req: Request, res: Response) => {
 	try {
-		const { url, engine } = ValidateScrapeRequestSchema(req.body);
+		const { url, engine, takeFullScreenshot } = ValidateScrapeRequestSchema(
+			req.body,
+		);
 		const result = await scrapeWithEngine(url, engine);
 
 		res.json(result).status(201);

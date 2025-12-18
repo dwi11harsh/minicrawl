@@ -4,6 +4,7 @@ import z from 'zod';
 export const scrapeRequestSchema = z.object({
 	url: z.url(),
 	engine: z.enum(['fetch', 'playwright']).default('fetch'),
+	takeFullScreenshot: z.boolean().default(false),
 });
 
 export const ValidateScrapeRequestSchema = (request: any) => {

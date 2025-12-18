@@ -5,5 +5,6 @@ export default defineConfig((options: Options) => ({
 	clean: true,
 	format: ['cjs'],
 	noExternal: [/@repo\/.*/], // bundle all @repo/* packages
+	external: ['playwright', 'playwright-core'], // dont bundle playwright due to its complex runtime requirements
 	...options,
 }));
