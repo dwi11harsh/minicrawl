@@ -13,6 +13,7 @@ const fallbackChains: Record<ScrapeRequestSchemaType['engine'], EngineType[]> =
 
 type EngineFn = (
 	url: string,
+	takeFullScreenshot?: boolean,
 	options?: { timeout?: number },
 ) => Promise<Document | null>;
 
@@ -24,9 +25,13 @@ const engines: Record<EngineType, EngineFn> = {
 			return null;
 		}
 	},
-	playwright: async url => {
+	playwright: async (url, takeFullScreenshot) => {
 		try {
-			return await playwrightEngine(url);
+			if (takeFullScreenshot) {
+				return await playwrightEngine(url, takeFullScreenshot);
+			} else {
+				return await playwrightEngine(url);
+			}
 		} catch {
 			return null;
 		}
@@ -40,13 +45,16 @@ const engines: Record<EngineType, EngineFn> = {
 export const scrapeWithEngine = async (
 	url: string,
 	engine: ScrapeRequestSchemaType['engine'],
+	takeFullScreenshot: boolean,
 ): Promise<Document> => {
 	// if we need to take screenshot we will have to open the playwright browser
-	const chain = fallbackChains[engine];
+	const chain = takeFullScreenshot
+		? fallbackChains['playwright']
+		: fallbackChains[engine];
 
 	// use each engine with their respective fallbacks
 	for (const engineName of chain) {
-		const result = await engines[engineName](url);
+		const result = await engines[engineName](url, takeFullScreenshot);
 
 		if (result) {
 			return result;

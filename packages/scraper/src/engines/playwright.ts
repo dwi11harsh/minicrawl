@@ -4,6 +4,7 @@ import { Browser, chromium } from 'playwright';
 
 export const playwrightEngine = async (
 	url: string,
+	takeFullScreenshot?: boolean,
 	options?: {
 		timeout?: number;
 	},
@@ -26,6 +27,17 @@ export const playwrightEngine = async (
 		logger.info('scraping html');
 		const html = await page.content();
 
+		// take screenshot if asked for
+		let screenshot: string | null = null;
+		if (takeFullScreenshot) {
+			logger.info('taking screenshot');
+			const buffer = await page.screenshot({
+				fullPage: true,
+			});
+			console.log('converting to base64');
+			screenshot = buffer.toString();
+		}
+
 		// close the browser
 		logger.info('===closing chromium browser===');
 		await browser.close();
@@ -34,6 +46,7 @@ export const playwrightEngine = async (
 		return {
 			url,
 			html,
+			...(screenshot ? { screenshot } : {}),
 		};
 	} catch (err) {
 		if (browser) {

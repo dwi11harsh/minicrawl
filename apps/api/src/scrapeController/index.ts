@@ -7,7 +7,7 @@ export const scrapeController = async (req: Request, res: Response) => {
 		const { url, engine, takeFullScreenshot } = ValidateScrapeRequestSchema(
 			req.body,
 		);
-		const result = await scrapeWithEngine(url, engine);
+		const result = await scrapeWithEngine(url, engine, takeFullScreenshot);
 
 		res.json(result).status(201);
 	} catch (e: unknown) {
