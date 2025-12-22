@@ -12,6 +12,7 @@
 	"devDependencies": {
 		"@mc/eslint-config": "workspace:*",
 		"@mc/typescript-config": "workspace:*",
+		"@mc/express-server": "workspace:*",
 		"@types/bun": "latest",
 		"tsup": "8.5.1",
 		"typescript": "^5"

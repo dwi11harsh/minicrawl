@@ -13,6 +13,7 @@
       "name": "api",
       "devDependencies": {
         "@mc/eslint-config": "workspace:*",
+        "@mc/express-server": "workspace:*",
         "@mc/typescript-config": "workspace:*",
         "@types/bun": "latest",
         "tsup": "8.5.1",
