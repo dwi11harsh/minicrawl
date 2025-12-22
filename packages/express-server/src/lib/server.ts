@@ -11,8 +11,8 @@ export const CreateServer = (): Express => {
 		.use(urlencoded({ extended: true }))
 		.use(bodyParser.json())
 		.use(cors())
-		.use(ErrorHandler)
-		.use(logMiddleware);
+		.use(logMiddleware('API Request'))
+		.use(ErrorHandler);
 
 	return app;
 };

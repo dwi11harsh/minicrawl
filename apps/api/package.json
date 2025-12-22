@@ -1,5 +1,5 @@
 {
-	"name": "api",
+	"name": "@mc/api",
 	"main": "dist/index.js",
 	"private": true,
 	"scripts": {
@@ -11,10 +11,14 @@
 	},
 	"devDependencies": {
 		"@mc/eslint-config": "workspace:*",
-		"@mc/typescript-config": "workspace:*",
 		"@mc/express-server": "workspace:*",
+		"@mc/typescript-config": "workspace:*",
 		"@types/bun": "latest",
+		"@types/express": "5.0.6",
 		"tsup": "8.5.1",
 		"typescript": "^5"
+	},
+	"dependencies": {
+		"express": "5.2.1"
 	}
 }

@@ -10,12 +10,16 @@
       },
     },
     "apps/api": {
-      "name": "api",
+      "name": "@mc/api",
+      "dependencies": {
+        "express": "5.2.1",
+      },
       "devDependencies": {
         "@mc/eslint-config": "workspace:*",
         "@mc/express-server": "workspace:*",
         "@mc/typescript-config": "workspace:*",
         "@types/bun": "latest",
+        "@types/express": "5.0.6",
         "tsup": "8.5.1",
         "typescript": "^5",
       },
@@ -245,6 +249,8 @@
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
+    "@mc/api": ["@mc/api@workspace:apps/api"],
+
     "@mc/eslint-config": ["@mc/eslint-config@workspace:packages/eslint-config"],
 
     "@mc/express-server": ["@mc/express-server@workspace:packages/express-server"],
@@ -390,8 +396,6 @@
     "ansi-styles": ["ansi-styles@4.3.0", "", { "dependencies": { "color-convert": "^2.0.1" } }, "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="],
 
     "any-promise": ["any-promise@1.3.0", "", {}, "sha512-7UvmKalWRt1wgjL1RrGxoSJW/0QZFIegpeGvZG9kjp8vrRu55XTHbwnqq2GpXm9uLbcuhxm3IqX9OB4MZR1b2A=="],
-
-    "api": ["api@workspace:apps/api"],
 
     "argparse": ["argparse@2.0.1", "", {}, "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q=="],
 
