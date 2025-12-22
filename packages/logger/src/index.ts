@@ -66,7 +66,6 @@ interface LoggerConfig {
 	defaultFontWeight: FontWeight;
 }
 
-// ANSI color codes for terminal environments
 const ANSI_COLORS: Record<Color, string> = {
 	black: '\x1b[30m',
 	red: '\x1b[31m',
@@ -88,7 +87,6 @@ const ANSI_COLORS: Record<Color, string> = {
 	reset: '\x1b[0m',
 };
 
-// ANSI font weight codes
 const ANSI_FONT_WEIGHTS: Record<FontWeight, string> = {
 	normal: '\x1b[22m',
 	bold: '\x1b[1m',
@@ -105,7 +103,6 @@ const ANSI_FONT_WEIGHTS: Record<FontWeight, string> = {
 	'900': '\x1b[1m',
 };
 
-// CSS styles for browser environments
 const CSS_COLORS: Record<Color, string> = {
 	black: 'color: #000000',
 	red: 'color: #ff0000',
@@ -143,7 +140,6 @@ const CSS_FONT_WEIGHTS: Record<FontWeight, string> = {
 	'900': 'font-weight: 900',
 };
 
-// Detect if we're in a browser environment
 const isBrowser = ((): boolean => {
 	try {
 		return (
@@ -158,7 +154,6 @@ const isBrowser = ((): boolean => {
 	}
 })();
 
-// Default configuration
 const defaultConfig: LoggerConfig = {
 	defaultColor: 'reset',
 	defaultFontWeight: 'normal',
@@ -171,22 +166,17 @@ class Logger {
 		this.config = { ...defaultConfig, ...config };
 	}
 
-	/**
-	 * Apply styling to messages based on environment
-	 */
 	private applyStyle(
 		message: string,
 		color: Color,
 		fontWeight: FontWeight,
 	): string | [string, string] {
 		if (isBrowser) {
-			// Browser: use CSS styling
 			const colorStyle = CSS_COLORS[color];
 			const fontWeightStyle = CSS_FONT_WEIGHTS[fontWeight];
 			const combinedStyle = `${colorStyle}; ${fontWeightStyle}`;
 			return [message, combinedStyle];
 		} else {
-			// Node.js/Bun: use ANSI codes
 			const colorCode = ANSI_COLORS[color];
 			const fontWeightCode = ANSI_FONT_WEIGHTS[fontWeight];
 			const resetCode = ANSI_COLORS.reset;
@@ -194,9 +184,6 @@ class Logger {
 		}
 	}
 
-	/**
-	 * Generic log method that handles all console methods
-	 */
 	private logInternal(
 		level: LogLevel,
 		options: LoggerOptions,
@@ -205,7 +192,6 @@ class Logger {
 		const color = options.color ?? this.config.defaultColor;
 		const fontWeight = options.fontWeight ?? this.config.defaultFontWeight;
 
-		// Convert all arguments to strings for styling
 		const messages = args.map(arg => {
 			if (typeof arg === 'string') {
 				return arg;
@@ -217,7 +203,6 @@ class Logger {
 			}
 		});
 
-		// Special handling for methods that don't take styled messages
 		const noStyleMethods: LogLevel[] = [
 			'table',
 			'dir',
@@ -237,17 +222,14 @@ class Logger {
 		];
 
 		if (noStyleMethods.includes(level)) {
-			// For these methods, just call the console method directly
 			(console[level] as (...args: unknown[]) => void)(...args);
 			return;
 		}
 
-		// Apply styling to the first message
 		if (messages.length > 0 && messages[0] !== undefined) {
 			const styled = this.applyStyle(messages[0], color, fontWeight);
 
 			if (isBrowser && Array.isArray(styled)) {
-				// Browser: use %c placeholder
 				const [message, style] = styled;
 				const restMessages = messages.slice(1);
 				(console[level] as (...args: unknown[]) => void)(
@@ -256,7 +238,6 @@ class Logger {
 					...restMessages,
 				);
 			} else {
-				// Node.js/Bun: use ANSI codes
 				const restMessages = messages.slice(1);
 				(console[level] as (...args: unknown[]) => void)(
 					styled,
@@ -268,7 +249,6 @@ class Logger {
 		}
 	}
 
-	// Individual methods for each console function
 	log(options: LoggerOptions, ...args: unknown[]): void;
 	log(...args: unknown[]): void;
 	log(
@@ -539,9 +519,6 @@ class Logger {
 		}
 	}
 
-	/**
-	 * Type guard to check if an argument is LoggerOptions
-	 */
 	private isLoggerOptions(arg: unknown): arg is LoggerOptions {
 		if (typeof arg !== 'object' || arg === null) {
 			return false;
@@ -553,25 +530,17 @@ class Logger {
 		);
 	}
 
-	/**
-	 * Update default configuration
-	 */
 	setDefaults(config: Partial<LoggerConfig>): void {
 		this.config = { ...this.config, ...config };
 	}
 
-	/**
-	 * Get current configuration
-	 */
 	getDefaults(): LoggerConfig {
 		return { ...this.config };
 	}
 }
 
-// Create and export a default logger instance
 const logger = new Logger();
 
-// Export the Logger class and default instance
 export {
 	Logger,
 	logger,
