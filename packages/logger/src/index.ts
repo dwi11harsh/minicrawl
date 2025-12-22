@@ -250,80 +250,188 @@ class Logger {
 	}
 
 	log(options: LoggerOptions, ...args: unknown[]): void;
+	log(message: string, color: Color, ...args: unknown[]): void;
 	log(...args: unknown[]): void;
 	log(
-		optionsOrFirstArg?: LoggerOptions | unknown,
+		optionsOrFirstArg?: LoggerOptions | string | unknown,
+		secondArg?: Color | unknown,
 		...restArgs: unknown[]
 	): void {
 		if (this.isLoggerOptions(optionsOrFirstArg)) {
 			this.logInternal('log', optionsOrFirstArg, ...restArgs);
+		} else if (
+			typeof optionsOrFirstArg === 'string' &&
+			this.isColor(secondArg)
+		) {
+			this.logInternal(
+				'log',
+				{ color: secondArg },
+				optionsOrFirstArg,
+				...restArgs,
+			);
 		} else {
-			this.logInternal('log', {}, optionsOrFirstArg, ...restArgs);
+			this.logInternal(
+				'log',
+				{},
+				optionsOrFirstArg,
+				secondArg,
+				...restArgs,
+			);
 		}
 	}
 
 	info(options: LoggerOptions, ...args: unknown[]): void;
+	info(message: string, color: Color, ...args: unknown[]): void;
 	info(...args: unknown[]): void;
 	info(
-		optionsOrFirstArg?: LoggerOptions | unknown,
+		optionsOrFirstArg?: LoggerOptions | string | unknown,
+		secondArg?: Color | unknown,
 		...restArgs: unknown[]
 	): void {
 		if (this.isLoggerOptions(optionsOrFirstArg)) {
 			this.logInternal('info', optionsOrFirstArg, ...restArgs);
+		} else if (
+			typeof optionsOrFirstArg === 'string' &&
+			this.isColor(secondArg)
+		) {
+			this.logInternal(
+				'info',
+				{ color: secondArg },
+				optionsOrFirstArg,
+				...restArgs,
+			);
 		} else {
-			this.logInternal('info', {}, optionsOrFirstArg, ...restArgs);
+			this.logInternal(
+				'info',
+				{},
+				optionsOrFirstArg,
+				secondArg,
+				...restArgs,
+			);
 		}
 	}
 
 	warn(options: LoggerOptions, ...args: unknown[]): void;
+	warn(message: string, color: Color, ...args: unknown[]): void;
 	warn(...args: unknown[]): void;
 	warn(
-		optionsOrFirstArg?: LoggerOptions | unknown,
+		optionsOrFirstArg?: LoggerOptions | string | unknown,
+		secondArg?: Color | unknown,
 		...restArgs: unknown[]
 	): void {
 		if (this.isLoggerOptions(optionsOrFirstArg)) {
 			this.logInternal('warn', optionsOrFirstArg, ...restArgs);
+		} else if (
+			typeof optionsOrFirstArg === 'string' &&
+			this.isColor(secondArg)
+		) {
+			this.logInternal(
+				'warn',
+				{ color: secondArg },
+				optionsOrFirstArg,
+				...restArgs,
+			);
 		} else {
-			this.logInternal('warn', {}, optionsOrFirstArg, ...restArgs);
+			this.logInternal(
+				'warn',
+				{},
+				optionsOrFirstArg,
+				secondArg,
+				...restArgs,
+			);
 		}
 	}
 
 	error(options: LoggerOptions, ...args: unknown[]): void;
+	error(message: string, color: Color, ...args: unknown[]): void;
 	error(...args: unknown[]): void;
 	error(
-		optionsOrFirstArg?: LoggerOptions | unknown,
+		optionsOrFirstArg?: LoggerOptions | string | unknown,
+		secondArg?: Color | unknown,
 		...restArgs: unknown[]
 	): void {
 		if (this.isLoggerOptions(optionsOrFirstArg)) {
 			this.logInternal('error', optionsOrFirstArg, ...restArgs);
+		} else if (
+			typeof optionsOrFirstArg === 'string' &&
+			this.isColor(secondArg)
+		) {
+			this.logInternal(
+				'error',
+				{ color: secondArg },
+				optionsOrFirstArg,
+				...restArgs,
+			);
 		} else {
-			this.logInternal('error', {}, optionsOrFirstArg, ...restArgs);
+			this.logInternal(
+				'error',
+				{},
+				optionsOrFirstArg,
+				secondArg,
+				...restArgs,
+			);
 		}
 	}
 
 	debug(options: LoggerOptions, ...args: unknown[]): void;
+	debug(message: string, color: Color, ...args: unknown[]): void;
 	debug(...args: unknown[]): void;
 	debug(
-		optionsOrFirstArg?: LoggerOptions | unknown,
+		optionsOrFirstArg?: LoggerOptions | string | unknown,
+		secondArg?: Color | unknown,
 		...restArgs: unknown[]
 	): void {
 		if (this.isLoggerOptions(optionsOrFirstArg)) {
 			this.logInternal('debug', optionsOrFirstArg, ...restArgs);
+		} else if (
+			typeof optionsOrFirstArg === 'string' &&
+			this.isColor(secondArg)
+		) {
+			this.logInternal(
+				'debug',
+				{ color: secondArg },
+				optionsOrFirstArg,
+				...restArgs,
+			);
 		} else {
-			this.logInternal('debug', {}, optionsOrFirstArg, ...restArgs);
+			this.logInternal(
+				'debug',
+				{},
+				optionsOrFirstArg,
+				secondArg,
+				...restArgs,
+			);
 		}
 	}
 
 	trace(options: LoggerOptions, ...args: unknown[]): void;
+	trace(message: string, color: Color, ...args: unknown[]): void;
 	trace(...args: unknown[]): void;
 	trace(
-		optionsOrFirstArg?: LoggerOptions | unknown,
+		optionsOrFirstArg?: LoggerOptions | string | unknown,
+		secondArg?: Color | unknown,
 		...restArgs: unknown[]
 	): void {
 		if (this.isLoggerOptions(optionsOrFirstArg)) {
 			this.logInternal('trace', optionsOrFirstArg, ...restArgs);
+		} else if (
+			typeof optionsOrFirstArg === 'string' &&
+			this.isColor(secondArg)
+		) {
+			this.logInternal(
+				'trace',
+				{ color: secondArg },
+				optionsOrFirstArg,
+				...restArgs,
+			);
 		} else {
-			this.logInternal('trace', {}, optionsOrFirstArg, ...restArgs);
+			this.logInternal(
+				'trace',
+				{},
+				optionsOrFirstArg,
+				secondArg,
+				...restArgs,
+			);
 		}
 	}
 
@@ -528,6 +636,33 @@ class Logger {
 			('color' in obj && typeof obj.color === 'string') ||
 			('fontWeight' in obj && typeof obj.fontWeight === 'string')
 		);
+	}
+
+	private isColor(arg: unknown): arg is Color {
+		if (typeof arg !== 'string') {
+			return false;
+		}
+		const validColors: Color[] = [
+			'black',
+			'red',
+			'green',
+			'yellow',
+			'blue',
+			'magenta',
+			'cyan',
+			'white',
+			'gray',
+			'grey',
+			'brightRed',
+			'brightGreen',
+			'brightYellow',
+			'brightBlue',
+			'brightMagenta',
+			'brightCyan',
+			'brightWhite',
+			'reset',
+		];
+		return validColors.includes(arg as Color);
 	}
 
 	setDefaults(config: Partial<LoggerConfig>): void {
