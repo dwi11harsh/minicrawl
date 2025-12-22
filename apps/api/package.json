@@ -10,8 +10,8 @@
 		"lint": "eslint src/ --max-warnings 0"
 	},
 	"devDependencies": {
-		"@repo/eslint-config": "workspace:*",
-		"@repo/typescript-config": "workspace:*",
+		"@mc/eslint-config": "workspace:*",
+		"@mc/typescript-config": "workspace:*",
 		"@types/bun": "latest",
 		"tsup": "8.5.1",
 		"typescript": "^5"
