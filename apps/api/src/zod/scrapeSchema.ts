@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+// TODO: later add user id and api key options along with the logic to adjust for locally running minicrawl
+
 /**
  * Schema to validate incoming scrape request
  *
@@ -22,6 +24,7 @@ export const scrapeRequestSchema = z.object({
 	includeFullScreenshot: z.boolean().default(false),
 	includeRawHtml: z.boolean().default(false),
 	includeCleanHtml: z.boolean().default(false),
+	ignoreRobotsTxt: z.boolean().default(false),
 });
 
 export type ScrapeRequestType = z.infer<typeof scrapeRequestSchema>;
