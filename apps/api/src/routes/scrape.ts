@@ -10,13 +10,18 @@ export const scrapeRoute = async (request: Request, response: Response) => {
 			return response.status(400).json({
 				success: false,
 				message: 'Bad Request',
-				error: req.error,
+				error: {
+					cause: req.error.cause ? req.error.cause : undefined,
+					message: req.error.message
+						? req.error.message
+						: 'unknown error',
+				},
 			});
 		}
 		const data = req.data;
 
 		// 2. create new job id for this request, add metadata and push it to queue
-		console.log(`[NEW SCRAPE REQUEST]: ${data}`);
+		console.log(`[NEW SCRAPE REQUEST]: ${JSON.stringify(data)}`);
 
 		// 3. return job id and success true
 		return response.status(201).json({
@@ -28,7 +33,7 @@ export const scrapeRoute = async (request: Request, response: Response) => {
 		return response.status(500).json({
 			success: false,
 			message: 'Unknown error occurred while processing the request',
-			error: e,
+			error: (e as any).message,
 		});
 	}
 };
