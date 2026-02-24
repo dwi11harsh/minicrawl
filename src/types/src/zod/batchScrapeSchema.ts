@@ -9,7 +9,6 @@ import { z } from 'zod';
  * @property includeDiscoveredUrls - should response include an array of urls discovered while scraping the webpage
  * @property ignoreRobotsTxt - should the scraper ignore robots.txt rules
  */
-
 export const batchScrapeRequestSchema = z.object({
 	urls: z.array(
 		z.url().refine(val => {

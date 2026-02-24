@@ -14,12 +14,12 @@
 
 		"baseUrl": ".",
 		"paths": {
-			"@minicrawl/types": ["../../types/src/index.ts"],
-			"@minicrawl/types/*": ["../../types/src/*"],
-			"@minicrawl/redis": ["../../services/redis/src/index.ts"],
-			"@minicrawl/redis/*": ["../../services/redis/src/*"],
-			"@minicrawl/db": ["../../services/db/src/index.ts"],
-			"@minicrawl/db/*": ["../../services/db/src/*"]
+			"@mc/types": ["../../types/src/index.ts"],
+			"@mc/types/*": ["../../types/src/*"],
+			"@mc/redis": ["../../services/redis/src/index.ts"],
+			"@mc/redis/*": ["../../services/redis/src/*"],
+			"@mc/db": ["../../services/db/src/index.ts"],
+			"@mc/db/*": ["../../services/db/src/*"]
 		},
 
 		"strict": true,

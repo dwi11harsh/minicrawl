@@ -10,18 +10,18 @@ minicrawl is a scraper which works on top of browser automation. Currently minic
 
 ## Project Structure
 
-Minicrawl is a **Bun workspace monorepo**. All packages live under `src/` and are referenced via `@minicrawl/*` import aliases — no `../../` paths across package boundaries.
+Minicrawl is a **Bun workspace monorepo**. All packages live under `src/` and are referenced via `@mc/*` import aliases — no `../../` paths across package boundaries.
 
 ```
 minicrawl/                   ← workspace root
 ├── package.json             ← workspaces declared here
 ├── bun.lock                 ← single lockfile for the whole monorepo
 └── src/
-    ├── api/                 ← @minicrawl/api   (app — entry point, runs with Bun)
-    ├── types/               ← @minicrawl/types (shared TypeScript types)
+    ├── api/                 ← @mc/api   (app — entry point, runs with Bun)
+    ├── types/               ← @mc/types (shared TypeScript types)
     └── services/
-        ├── redis/           ← @minicrawl/redis (BullMQ + ioredis)
-        └── db/              ← @minicrawl/db    (Prisma + Postgres)
+        ├── redis/           ← @mc/redis (BullMQ + ioredis)
+        └── db/              ← @mc/db    (Prisma + Postgres)
 ```
 
 ---
@@ -31,7 +31,7 @@ minicrawl/                   ← workspace root
 ### App (e.g. a Next.js frontend `src/web`)
 
 1. Scaffold the package under `src/web/`.
-2. Give it a `package.json` with `"name": "@minicrawl/web"` and whatever `dev`/`build`/`start` scripts it needs.
+2. Give it a `package.json` with `"name": "@mc/web"` and whatever `dev`/`build`/`start` scripts it needs.
 3. Add `"src/web"` to the `"workspaces"` array in the **root** `package.json`.
 4. Run `bun install` from the root — Bun symlinks it into `node_modules/`.
 
@@ -68,11 +68,11 @@ Then run it from anywhere in the repo with `bun run dev`.
 Every package declares the sibling aliases it needs in its own `tsconfig.json` under `compilerOptions.paths`. Bun resolves them at runtime via workspace symlinks — no compilation step required.
 
 ```ts
-// ✅ clean cross-package import
-import type { ScrapeRequestType } from '@minicrawl/types';
-import { createQueue } from '@minicrawl/redis';
-import { db } from '@minicrawl/db';
+// clean cross-package import
+import type { ScrapeRequestType } from '@mc/types';
+import { createQueue } from '@mc/redis';
+import { db } from '@mc/db';
 
-// ✅ intra-package import — keep these relative
+// intra-package import — keep these relative
 import { scrapeHandler } from './routes/scrape';
 ```

@@ -1,5 +1,5 @@
+import { crawlRequestSchema } from '@mc/types';
 import type { Request, Response } from 'express';
-import { crawlRequestSchema, scrapeRequestSchema } from '../zod';
 
 export const crawlRoute = async (request: Request, response: Response) => {
 	try {

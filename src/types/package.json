@@ -1,5 +1,5 @@
 {
-	"name": "@minicrawl/types",
+	"name": "@mc/types",
 	"version": "0.0.1",
 	"private": true,
 	"main": "./src/index.ts",
@@ -11,5 +11,8 @@
 	},
 	"peerDependencies": {
 		"typescript": "^5"
+	},
+	"dependencies": {
+		"zod": "^4.3.6"
 	}
 }

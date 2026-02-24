@@ -10,7 +10,6 @@ import { z } from 'zod';
  * @property allowSubdomains - allow subdomains of of base domain
  * @property delay - delay between subsequent scrapes
  */
-
 export const sitemapCrawlRequestSchema = z.object({
 	url: z.url().refine(val => {
 		const { protocol } = new URL(val);

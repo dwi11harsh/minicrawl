@@ -1,13 +1,13 @@
 {
-	"name": "@minicrawl/api",
+	"name": "@mc/api",
 	"scripts": {
 		"dev": "bun run --watch src/index.ts",
 		"start": "bun run src/index.ts"
 	},
 	"dependencies": {
-		"@minicrawl/types": "workspace:*",
-		"@minicrawl/redis": "workspace:*",
-		"@minicrawl/db": "workspace:*",
+		"@mc/types": "workspace:*",
+		"@mc/redis": "workspace:*",
+		"@mc/db": "workspace:*",
 		"body-parser": "^2.2.2",
 		"dotenv": "^17.3.1",
 		"express": "^5.2.1",

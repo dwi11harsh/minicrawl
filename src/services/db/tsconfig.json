@@ -12,8 +12,8 @@
 		"skipLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"@minicrawl/types": ["../../types/src/index.ts"],
-			"@minicrawl/types/*": ["../../types/src/*"]
+			"@mc/types": ["../../types/src/index.ts"],
+			"@mc/types/*": ["../../types/src/*"]
 		}
 	}
 }

@@ -1,5 +1,5 @@
+import { sitemapCrawlRequestSchema } from '@mc/types';
 import type { Request, Response } from 'express';
-import { sitemapCrawlRequestSchema } from '../zod';
 
 export const crawlSitemapRoute = async (
 	request: Request,

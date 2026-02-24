@@ -1,5 +1,5 @@
+import { batchScrapeRequestSchema } from '@mc/types';
 import type { Request, Response } from 'express';
-import { batchScrapeRequestSchema } from '../zod';
 
 export const batchScrapeRoute = async (
 	request: Request,
