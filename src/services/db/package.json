@@ -6,10 +6,7 @@
 	"exports": {
 		".": "./src/index.ts"
 	},
-	"dependencies": {
-		"@prisma/client": "^6.x.x",
-		"prisma": "^6.x.x"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@types/bun": "latest"
 	},

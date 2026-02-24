@@ -6,10 +6,7 @@
 	"exports": {
 		".": "./src/index.ts"
 	},
-	"dependencies": {
-		"bullmq": "^5.x.x",
-		"ioredis": "^5.x.x"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@types/bun": "latest"
 	},
