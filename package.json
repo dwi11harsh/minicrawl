@@ -1,6 +1,9 @@
 {
 	"name": "minicrawl",
 	"private": true,
+	"scripts": {
+		"dev": "bun run --filter @mc/api dev"
+	},
 	"workspaces": [
 		"src/api",
 		"src/types",

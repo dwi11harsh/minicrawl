@@ -39,29 +39,45 @@ minicrawl/                   ← workspace root
 
 Same steps as an app, but **do not add a build script**. Services are transpiled by Bun at the point of import. Add only operational scripts (e.g. Prisma `db:generate`, `db:migrate`).
 
-### Installing a Package into a Specific Workspace
+### Managing Workspace Packages
+
+Bun's `--filter` flag allows you to target specific packages by their name (e.g., `@mc/api`).
+
+#### Installing a Package into a Specific Workspace
 
 ```bash
-# Add a dependency to src/api only
-bun add <package> --cwd src/api
+# Add a dependency to @mc/api
+bun add <package> --filter @mc/api
 
-# Add a dev dependency to src/services/db
-bun add -D <package> --cwd src/services/db
+# Add a dev dependency to @mc/db
+bun add -D <package> --filter @mc/db
 ```
 
-### Adding a Root-Level Script
+#### Running Scripts in a Specific Workspace
 
-Add an entry to the root `package.json` `"scripts"` field:
+You can run a script defined in a package's `package.json` without changing directories:
+
+```bash
+# Run 'db:migrate' in @mc/db
+bun run --filter @mc/db db:migrate
+
+# Run 'dev' in @mc/api
+bun run --filter @mc/api dev
+```
+
+### Adding a Root-Level Shortcut
+
+If you frequently run a specific command, you can still add a shortcut to the root `package.json`:
 
 ```json
 {
 	"scripts": {
-		"dev": "bun run --cwd src/api dev"
+		"dev": "bun run --filter @mc/api dev"
 	}
 }
 ```
 
-Then run it from anywhere in the repo with `bun run dev`.
+Then run it from the root with `bun run dev`.
 
 ### Cross-Package Imports
 
