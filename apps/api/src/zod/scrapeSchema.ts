@@ -9,10 +9,13 @@ import { z } from 'zod';
  * @property includeFullScreenshot - should full-screen screenshot be included in the response
  * @property includeRawHtml - should raw html be included in response
  * @property includeCleanHtml - should response include clean html
+ * @property includeDiscoveredUrls - should response include an array of urls discovered while scraping the webpage
+ * @property delay - delay between subsequent scrapes
+ * @property ignoreRobotsTxt - should the scraper ignore robots.txt rules
  */
 export const scrapeRequestSchema = z.object({
 	url: z.url().refine(val => {
-		const { protocol, hostname } = new URL(val);
+		const { protocol } = new URL(val);
 
 		// only include http and https protocol
 		if (protocol === 'http:' || protocol === 'https:') {
@@ -24,6 +27,8 @@ export const scrapeRequestSchema = z.object({
 	includeFullScreenshot: z.boolean().default(false),
 	includeRawHtml: z.boolean().default(false),
 	includeCleanHtml: z.boolean().default(false),
+	includeDiscoveredUrls: z.boolean().default(false),
+	delay: z.number().min(0).max(10).optional(),
 	ignoreRobotsTxt: z.boolean().default(false),
 });
 
