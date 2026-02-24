@@ -1,8 +1,42 @@
 import type { Request, Response } from 'express';
+import { sitemapCrawlRequestSchema } from '../zod';
 
-export const crawlSitemapRoute = async (req: Request, res: Response) => {
-	const requestBody = req.body;
+export const crawlSitemapRoute = async (
+	request: Request,
+	response: Response,
+) => {
+	try {
+		// 1. parse incoming request
+		const req = sitemapCrawlRequestSchema.safeParse(request.body);
 
-	console.log('/scrape:', requestBody);
-	res.json({ message: 'crawl sitemap working' });
+		if (!req.success) {
+			return response.status(400).json({
+				success: false,
+				message: 'Bad Request',
+				error: {
+					cause: req.error.cause ? req.error.cause : undefined,
+					message: req.error.message
+						? req.error.message
+						: 'unknown error',
+				},
+			});
+		}
+		const data = req.data;
+
+		// 2. create new job id for this request, add metadata and push it to queue
+		console.log(`[NEW CRAWL SITEMAP REQUEST]: ${JSON.stringify(data)}`);
+
+		// 3. return job id and success true
+		return response.status(201).json({
+			success: true,
+			message: 'a new job request has been created',
+			jobid: '12345',
+		});
+	} catch (e) {
+		return response.status(500).json({
+			success: false,
+			message: 'Unknown error occurred while processing the request',
+			error: (e as any).message,
+		});
+	}
 };
