@@ -1,0 +1,10 @@
+{
+	"name": "minicrawl",
+	"private": true,
+	"workspaces": [
+		"src/api",
+		"src/types",
+		"src/services/redis",
+		"src/services/db"
+	]
+}

@@ -1,0 +1,23 @@
+{
+	"name": "@minicrawl/db",
+	"version": "0.0.1",
+	"private": true,
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"dependencies": {
+		"@prisma/client": "^6.x.x",
+		"prisma": "^6.x.x"
+	},
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"scripts": {
+		"db:generate": "prisma generate",
+		"db:migrate": "prisma migrate dev"
+	}
+}

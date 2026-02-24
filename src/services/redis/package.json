@@ -1,0 +1,19 @@
+{
+	"name": "@minicrawl/redis",
+	"version": "0.0.1",
+	"private": true,
+	"main": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"dependencies": {
+		"bullmq": "^5.x.x",
+		"ioredis": "^5.x.x"
+	},
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	}
+}
