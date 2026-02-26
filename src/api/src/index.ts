@@ -43,8 +43,29 @@ app.post('/crawl', crawlRoute);
 app.post('/crawl/sitemap', crawlSitemapRoute);
 
 // server
-app.listen(Number(config.PORT), config.HOST, () => {
+const server = app.listen(Number(config.PORT), config.HOST, () => {
 	console.log(
 		`[SERVER STARTS] access minicrawl at http://${config.HOST}:${config.PORT}`,
 	);
+});
+
+// graceful shutdown
+process.on('SIGINT', () => {
+	console.log('***************');
+	console.log('shutting down server gracefully after [SIGINT] was recieved');
+
+	// TODO: add closing db connection and redis connection logic
+
+	console.log('***************');
+	server.close();
+});
+
+process.on('SIGTERM', () => {
+	console.log('***************');
+	console.log('shutting down server gracefully after [SIGTERM] was recieved');
+
+	// TODO: add closing db connection and redis connection logic
+
+	console.log('***************');
+	server.close();
 });

@@ -2,7 +2,7 @@
 	"name": "minicrawl",
 	"private": true,
 	"scripts": {
-		"dev": "bun run --filter @mc/api dev"
+		"dev": "bun src/api/src/index.ts"
 	},
 	"workspaces": [
 		"src/api",

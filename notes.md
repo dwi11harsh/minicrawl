@@ -1,0 +1,1 @@
+- if `bun run --filter @mc/api dev` is put in root `package.json` `dev` script then sometimes graceful shutdown is not getting triggered
