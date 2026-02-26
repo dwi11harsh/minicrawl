@@ -16,6 +16,9 @@ import { scrapeRoute } from './routes/scrape';
 import { batchScrapeRoute } from './routes/batch-scrape';
 import { crawlRoute } from './routes/crawl';
 import { crawlSitemapRoute } from './routes/crawl-sitemap';
+import createLogger from '@mc/logger';
+
+const logger = createLogger('@mc/api/index:');
 
 const app: Application = express();
 
@@ -23,7 +26,7 @@ const app: Application = express();
 app.use(bodyParser.json());
 app.use(
 	responseTime((req: Request, res: Response, time) => {
-		console.log(
+		logger.log(
 			`[URL]:${req.url} [METHOD]:${req.method} [TIME TAKEN]:${time.toFixed(4)}ms`,
 		);
 	}),
@@ -44,28 +47,28 @@ app.post('/crawl/sitemap', crawlSitemapRoute);
 
 // server
 const server = app.listen(Number(config.PORT), config.HOST, () => {
-	console.log(
+	logger.info(
 		`[SERVER STARTS] access minicrawl at http://${config.HOST}:${config.PORT}`,
 	);
 });
 
 // graceful shutdown
 process.on('SIGINT', () => {
-	console.log('***************');
-	console.log('shutting down server gracefully after [SIGINT] was recieved');
+	logger.log('***************');
+	logger.info('[SIGINT] recieved, shutting down gracefully');
 
 	// TODO: add closing db connection and redis connection logic
 
-	console.log('***************');
+	logger.log('***************');
 	server.close();
 });
 
 process.on('SIGTERM', () => {
-	console.log('***************');
-	console.log('shutting down server gracefully after [SIGTERM] was recieved');
+	logger.log('***************');
+	logger.log('[SIGTERM] recieved, shutting down gracefully');
 
 	// TODO: add closing db connection and redis connection logic
 
-	console.log('***************');
+	logger.log('***************');
 	server.close();
 });

@@ -19,7 +19,8 @@
 			"@mc/redis": ["../../services/redis/src/index.ts"],
 			"@mc/redis/*": ["../../services/redis/src/*"],
 			"@mc/db": ["../../services/db/src/index.ts"],
-			"@mc/db/*": ["../../services/db/src/*"]
+			"@mc/db/*": ["../../services/db/src/*"],
+			"@mc/logger": ["../../services/logger/index.ts"]
 		},
 
 		"strict": true,

@@ -8,6 +8,7 @@
 		"@mc/types": "workspace:*",
 		"@mc/redis": "workspace:*",
 		"@mc/db": "workspace:*",
+		"@mc/logger": "workspace:*",
 		"body-parser": "^2.2.2",
 		"dotenv": "^17.3.1",
 		"express": "^5.2.1",

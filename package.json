@@ -2,12 +2,15 @@
 	"name": "minicrawl",
 	"private": true,
 	"scripts": {
-		"dev": "bun src/api/src/index.ts"
+		"dev": "bun src/api/src/index.ts",
+		"add:redis": "bun add --cwd src/services/redis",
+		"add:db": "bun add --cwd src/services/db"
 	},
 	"workspaces": [
 		"src/api",
 		"src/types",
 		"src/services/redis",
-		"src/services/db"
+		"src/services/db",
+		"src/services/logger"
 	]
 }
