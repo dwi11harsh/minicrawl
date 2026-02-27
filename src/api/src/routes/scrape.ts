@@ -27,12 +27,12 @@ export const scrapeRoute = async (request: Request, response: Response) => {
 
 		// 2. create new job id for this request, add metadata and push it to queue
 		const jobId = uuidv4();
-		const scrapeJob: ScrapeJobForQueue = {
+		const job: ScrapeJobForQueue = {
 			id: jobId,
 			scrapeArguments: data,
 		};
 		const queue = getScrapeQueue();
-		await queue.add(queueJobNames.scrape, scrapeJob);
+		await queue.add(queueJobNames.scrape, job);
 
 		logger.info(`job ${jobId} added to scrape queue`);
 

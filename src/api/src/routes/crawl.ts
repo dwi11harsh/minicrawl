@@ -24,12 +24,12 @@ export const crawlRoute = async (request: Request, response: Response) => {
 
 		// 2. create new job id for this request, add metadata and push it to queue
 		const jobId = uuidv4();
-		const crawlJob: CrawlJobForQueue = {
+		const job: CrawlJobForQueue = {
 			id: jobId,
 			crawlArguments: data,
 		};
 		const queue = getCrawlQueue();
-		await queue.add(queueJobNames.crawl, crawlJob);
+		await queue.add(queueJobNames.crawl, job);
 
 		// 3. return job id and success true
 		return response.status(201).json({

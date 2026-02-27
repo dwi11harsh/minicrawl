@@ -1,5 +1,10 @@
-import { batchScrapeRequestSchema } from '@mc/types';
+import { getScrapeQueue, queueJobNames } from '@mc/redis';
+import {
+	batchScrapeRequestSchema,
+	type BatchScrapeJobForQueue,
+} from '@mc/types';
 import type { Request, Response } from 'express';
+import { v4 as uuidv4 } from 'uuid';
 
 export const batchScrapeRoute = async (
 	request: Request,
@@ -24,7 +29,13 @@ export const batchScrapeRoute = async (
 		const data = req.data;
 
 		// 2. create new job id for this request, add metadata and push it to queue
-		console.log(`[NEW SCRAPE REQUEST]: ${JSON.stringify(data)}`);
+		const jobId = uuidv4();
+		const job: BatchScrapeJobForQueue = {
+			id: jobId,
+			scrapeArguments: data,
+		};
+		const queue = getScrapeQueue();
+		await queue.add(queueJobNames.scrape, job);
 
 		// 3. return job id and success true
 		return response.status(201).json({
