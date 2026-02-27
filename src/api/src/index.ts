@@ -17,6 +17,8 @@ import { batchScrapeRoute } from './routes/batch-scrape';
 import { crawlRoute } from './routes/crawl';
 import { crawlSitemapRoute } from './routes/crawl-sitemap';
 import createLogger from '@mc/logger';
+import type { ProcessEventMap } from 'process';
+import { closeQueues } from '@mc/redis';
 
 const logger = createLogger('@mc/api/index:');
 
@@ -52,23 +54,15 @@ const server = app.listen(Number(config.PORT), config.HOST, () => {
 	);
 });
 
+// graceful shutdown on signals
+const gracefulShutdown = async (signal: keyof ProcessEventMap) => {
+	logger.log('***************\n\n');
+	logger.info(`${signal} received, initialising graceful shutdown`);
+
+	await closeQueues();
+	server.close();
+};
+
 // graceful shutdown
-process.on('SIGINT', () => {
-	logger.log('***************');
-	logger.info('[SIGINT] recieved, shutting down gracefully');
-
-	// TODO: add closing db connection and redis connection logic
-
-	logger.log('***************');
-	server.close();
-});
-
-process.on('SIGTERM', () => {
-	logger.log('***************');
-	logger.log('[SIGTERM] recieved, shutting down gracefully');
-
-	// TODO: add closing db connection and redis connection logic
-
-	logger.log('***************');
-	server.close();
-});
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
