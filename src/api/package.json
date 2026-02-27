@@ -5,11 +5,14 @@
 		"start": "bun run src/index.ts"
 	},
 	"dependencies": {
+		"@bull-board/api": "^6.20.3",
+		"@bull-board/express": "^6.20.3",
 		"@mc/db": "workspace:*",
 		"@mc/logger": "workspace:*",
 		"@mc/redis": "workspace:*",
 		"@mc/types": "workspace:*",
 		"body-parser": "^2.2.2",
+		"bullmq": "^5.70.1",
 		"dotenv": "^17.3.1",
 		"express": "^5.2.1",
 		"response-time": "^2.3.4",

@@ -18,12 +18,33 @@ import { crawlRoute } from './routes/crawl';
 import { crawlSitemapRoute } from './routes/crawl-sitemap';
 import createLogger from '@mc/logger';
 import type { ProcessEventMap } from 'process';
-import { closeQueues, initQueues } from '@mc/redis';
+import {
+	closeQueues,
+	getCrawlDlq,
+	getCrawlQueue,
+	getScrapeDlq,
+	getScrapeQueue,
+	initQueues,
+} from '@mc/redis';
+import { createBullBoard } from '@bull-board/api';
+import { ExpressAdapter } from '@bull-board/express';
+import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 
 const remote_redis_uri = `redis://${config.REMOTE_REDIS_USERNAME}:${config.REMOTE_REDIS_PASSWORD}@${config.REMOTE_REDIS_HOST}:${config.REMOTE_REDIS_PORT}`;
 const redis_uri = `redis://${config.REDIS_USERNAME}:${config.REDIS_PASSWORD}@${config.REDIS_HOST}:${config.REDIS_PORT}`;
 
 initQueues(redis_uri);
+const serverAdapter = new ExpressAdapter();
+serverAdapter.setBasePath('/admin/queue');
+const { setQueues, replaceQueues, addQueue, removeQueue } = createBullBoard({
+	queues: [
+		new BullMQAdapter(getScrapeQueue()),
+		new BullMQAdapter(getCrawlQueue()),
+		new BullMQAdapter(getScrapeDlq()),
+		new BullMQAdapter(getCrawlDlq()),
+	],
+	serverAdapter,
+});
 
 const logger = createLogger('@mc/api/index:');
 
@@ -38,6 +59,7 @@ app.use(
 		);
 	}),
 );
+app.use('/admin/queue', serverAdapter.getRouter());
 
 // routes
 app.get('/', (req: Request, res: Response) => {
@@ -56,8 +78,9 @@ app.post('/crawl/sitemap', crawlSitemapRoute);
 
 // server
 const server = app.listen(Number(config.PORT), config.HOST, () => {
+	logger.info(`access minicrawl at http://${config.HOST}:${config.PORT}`);
 	logger.info(
-		`[SERVER STARTS] access minicrawl at http://${config.HOST}:${config.PORT}`,
+		`access queue dashbaord at http://${config.HOST}:${config.PORT}/admin/queue`,
 	);
 });
 

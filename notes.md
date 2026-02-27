@@ -5,3 +5,5 @@
 ```txt
 IMPORTANT! Eviction policy is volatile-lru. It should be "noeviction"
 ```
+
+- BullMQ and not Bull as I might wanna use `promoteJobs` in future to add priorities to queue jobs
