@@ -18,6 +18,7 @@ const initQueues = (
 	redisUrl: string,
 	defaultQueueJobOptions?: QueueOptions['defaultJobOptions'],
 ) => {
+	logger.info('Initializing Queues');
 	scrapeQueue = new Queue(scrapeQueueName, {
 		connection: getRedisConnection(redisUrl),
 		defaultJobOptions: defaultQueueJobOptions,

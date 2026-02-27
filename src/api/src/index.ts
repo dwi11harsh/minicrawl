@@ -18,7 +18,11 @@ import { crawlRoute } from './routes/crawl';
 import { crawlSitemapRoute } from './routes/crawl-sitemap';
 import createLogger from '@mc/logger';
 import type { ProcessEventMap } from 'process';
-import { closeQueues } from '@mc/redis';
+import { closeQueues, initQueues } from '@mc/redis';
+
+const redis_uri = `redis://${config.REMOTE_REDIS_USERNAME}:${config.REMOTE_REDIS_PASSWORD}@${config.REMOTE_REDIS_HOST}:${config.REMOTE_REDIS_PORT}`;
+
+initQueues(redis_uri);
 
 const logger = createLogger('@mc/api/index:');
 
