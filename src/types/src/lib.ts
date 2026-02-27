@@ -1,4 +1,8 @@
-import type { ScrapeRequestType } from '@mc/types';
+import type {
+	BatchScrapeRequestSchema,
+	CrawlRequestSchema,
+	ScrapeRequestType,
+} from '@mc/types';
 
 export interface Metadata {
 	title?: string;
@@ -22,4 +26,19 @@ export interface ScrapeResult {
 export interface ScrapeJobForQueue {
 	id: string;
 	scrapeArguments: ScrapeRequestType;
+}
+
+export interface CrawlJobForQueue {
+	id: string;
+	crawlArguments: CrawlRequestSchema;
+}
+
+export interface BatchScrapeJobForQueue {
+	id: string;
+	scrapeArguments: BatchScrapeRequestSchema;
+}
+
+export interface CrawlSitemapJobForQueue {
+	id: string;
+	crawlArguments: CrawlSitemapJobForQueue;
 }
