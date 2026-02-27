@@ -51,6 +51,7 @@
       "version": "0.0.1",
       "dependencies": {
         "@mc/logger": "workspace:*",
+        "@mc/types": "workspace:*",
         "bullmq": "^5.70.1",
         "ioredis": "^5.9.3",
       },

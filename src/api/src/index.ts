@@ -20,7 +20,8 @@ import createLogger from '@mc/logger';
 import type { ProcessEventMap } from 'process';
 import { closeQueues, initQueues } from '@mc/redis';
 
-const redis_uri = `redis://${config.REMOTE_REDIS_USERNAME}:${config.REMOTE_REDIS_PASSWORD}@${config.REMOTE_REDIS_HOST}:${config.REMOTE_REDIS_PORT}`;
+const remote_redis_uri = `redis://${config.REMOTE_REDIS_USERNAME}:${config.REMOTE_REDIS_PASSWORD}@${config.REMOTE_REDIS_HOST}:${config.REMOTE_REDIS_PORT}`;
+const redis_uri = `redis://${config.REDIS_USERNAME}:${config.REDIS_PASSWORD}@${config.REDIS_HOST}:${config.REDIS_PORT}`;
 
 initQueues(redis_uri);
 

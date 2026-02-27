@@ -11,12 +11,18 @@ const configSchema = z.object({
 	HOST: z.string().default('localhost'),
 	PORT: z.coerce.number().default(3002),
 
-	// redis
+	// remote redis
 	REMOTE_REDIS_USERNAME: z.string(),
 	REMOTE_REDIS_PASSWORD: z.string(),
 	REMOTE_REDIS_HOST: z.string(),
 	REMOTE_REDIS_PORT: z.coerce.number(),
 	REMOTE_REDIS_PUBLIC_ENDPOINT: z.string(),
+
+	// redis
+	REDIS_PORT: z.coerce.number(),
+	REDIS_HOST: z.string(),
+	REDIS_USERNAME: z.string(),
+	REDIS_PASSWORD: z.string(),
 
 	BULL_AUTH_KEY: z.string(),
 });

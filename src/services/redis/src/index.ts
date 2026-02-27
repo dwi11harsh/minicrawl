@@ -1,6 +1,7 @@
 import { Queue, type QueueOptions } from 'bullmq';
 import { getRedisConnection } from './lib/getRedisConnection';
 import createLogger from '@mc/logger';
+import type { ScrapeJobForQueue } from '@mc/types';
 
 const logger = createLogger('@mc/redis/index');
 
@@ -19,7 +20,7 @@ const initQueues = (
 	defaultQueueJobOptions?: QueueOptions['defaultJobOptions'],
 ) => {
 	logger.info('Initializing Queues');
-	scrapeQueue = new Queue(scrapeQueueName, {
+	scrapeQueue = new Queue<ScrapeJobForQueue>(scrapeQueueName, {
 		connection: getRedisConnection(redisUrl),
 		defaultJobOptions: defaultQueueJobOptions,
 	});
@@ -38,6 +39,20 @@ const initQueues = (
 		connection: getRedisConnection(redisUrl),
 		defaultJobOptions: defaultQueueJobOptions,
 	});
+
+	logger.log('<<<<<queue values>>>>>');
+	logger.info(
+		`QueueName: ${scrapeQueue.name} ${JSON.stringify(scrapeQueue.metaValues)}`,
+	);
+	logger.info(
+		`QueueName: ${crawlQueue.name} ${JSON.stringify(crawlQueue.metaValues)}`,
+	);
+	logger.info(
+		`QueueName: ${scrapeDlq.name} ${JSON.stringify(scrapeDlq.metaValues)}`,
+	);
+	logger.info(
+		`QueueName: ${crawlDlq.name} ${JSON.stringify(crawlDlq.metaValues)}`,
+	);
 };
 
 const getScrapeQueue = (): Queue => {
