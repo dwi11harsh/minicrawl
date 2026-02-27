@@ -4,7 +4,8 @@
 	"scripts": {
 		"dev": "bun src/api/src/index.ts",
 		"add:redis": "bun add --cwd src/services/redis",
-		"add:db": "bun add --cwd src/services/db"
+		"add:db": "bun add --cwd src/services/db",
+		"add:api": "bun add --cwd src/api"
 	},
 	"workspaces": [
 		"src/api",

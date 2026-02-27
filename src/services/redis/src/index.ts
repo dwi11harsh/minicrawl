@@ -19,6 +19,7 @@ const initQueues = (
 	redisUrl: string,
 	defaultQueueJobOptions?: QueueOptions['defaultJobOptions'],
 ) => {
+	// 1. initialize queues
 	logger.info('Initializing Queues');
 	scrapeQueue = new Queue<ScrapeJobForQueue>(scrapeQueueName, {
 		connection: getRedisConnection(redisUrl),
@@ -40,7 +41,9 @@ const initQueues = (
 		defaultJobOptions: defaultQueueJobOptions,
 	});
 
-	logger.log('<<<<<queue values>>>>>');
+	// 2. log queue names and queue meta values
+	logger.log('->queue values<-');
+
 	logger.info(
 		`QueueName: ${scrapeQueue.name} ${JSON.stringify(scrapeQueue.metaValues)}`,
 	);
@@ -98,6 +101,13 @@ const closeQueues = async () => {
 	}
 };
 
+const queueJobNames = {
+	scrape: 'ScrapeJobFromScrapeRoute',
+	crawl: 'CrawlJobFromCrawlRoute',
+	batchScrape: 'BatchScrapeJobFromBatchScrapeRoute',
+	sitemapCrawl: 'SitemapCrawlJobFromSitemapCrawlRoute',
+};
+
 export {
 	initQueues,
 	getScrapeQueue,
@@ -105,5 +115,6 @@ export {
 	getScrapeDlq,
 	getCrawlDlq,
 	closeQueues,
+	queueJobNames,
 };
 export * from './lib/getRedisConnection';

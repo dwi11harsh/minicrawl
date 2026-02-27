@@ -44,6 +44,8 @@ app.get('/', (req: Request, res: Response) => {
 	res.status(201).json('minicrawl is healty and live');
 });
 
+// TODO: add logic to get job state
+
 app.post('/scrape', scrapeRoute);
 
 app.post('/scrape/batch', batchScrapeRoute);
@@ -60,11 +62,10 @@ const server = app.listen(Number(config.PORT), config.HOST, () => {
 });
 
 // graceful shutdown on signals
-const gracefulShutdown = async (signal: keyof ProcessEventMap) => {
-	logger.log('***************\n\n');
+const gracefulShutdown = (signal: keyof ProcessEventMap) => {
 	logger.info(`${signal} received, initialising graceful shutdown`);
 
-	await closeQueues();
+	closeQueues();
 	server.close();
 };
 
