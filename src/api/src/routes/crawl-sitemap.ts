@@ -1,5 +1,6 @@
 import { sitemapCrawlRequestSchema } from '@mc/types';
 import type { Request, Response } from 'express';
+import { v4 as uuidv4 } from 'uuid';
 
 export const crawlSitemapRoute = async (
 	request: Request,
@@ -24,13 +25,14 @@ export const crawlSitemapRoute = async (
 		const data = req.data;
 
 		// 2. create new job id for this request, add metadata and push it to queue
-		console.log(`[NEW CRAWL SITEMAP REQUEST]: ${JSON.stringify(data)}`);
+		const jobId = uuidv4();
+		//TODO: add logic for this later
 
 		// 3. return job id and success true
 		return response.status(201).json({
 			success: true,
 			message: 'a new job request has been created',
-			jobid: '12345',
+			jobid: jobId,
 		});
 	} catch (e) {
 		return response.status(500).json({
