@@ -13,6 +13,8 @@
 		"typescript": "^5"
 	},
 	"dependencies": {
+		"@mc/logger": "workspace:*",
+		"@mc/redis": "workspace:*",
 		"bullmq": "^5.70.1"
 	}
 }

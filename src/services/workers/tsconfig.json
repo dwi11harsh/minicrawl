@@ -13,7 +13,9 @@
 		"baseUrl": ".",
 		"paths": {
 			"@mc/types": ["../../types/src/index.ts"],
-			"@mc/types/*": ["../../types/src/*"]
+			"@mc/types/*": ["../../types/src/*"],
+			"@mc/logger": ["../logger/index.ts"],
+			"@mc/redis": ["../redis/src/index.ts"]
 		}
 	}
 }

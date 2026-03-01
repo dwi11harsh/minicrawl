@@ -3,6 +3,9 @@
   "workspaces": {
     "": {
       "name": "minicrawl",
+      "dependencies": {
+        "dotenv": "^17.3.1",
+      },
     },
     "src/api": {
       "name": "@mc/api",
@@ -70,6 +73,8 @@
       "name": "@mc/workers",
       "version": "0.0.1",
       "dependencies": {
+        "@mc/logger": "workspace:*",
+        "@mc/redis": "workspace:*",
         "bullmq": "^5.70.1",
       },
       "devDependencies": {
