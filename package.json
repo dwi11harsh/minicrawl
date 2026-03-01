@@ -5,13 +5,15 @@
 		"dev": "bun src/api/src/index.ts",
 		"add:redis": "bun add --cwd src/services/redis",
 		"add:db": "bun add --cwd src/services/db",
-		"add:api": "bun add --cwd src/api"
+		"add:api": "bun add --cwd src/api",
+		"add:workers": "bun add --cwd src/services/workers"
 	},
 	"workspaces": [
 		"src/api",
 		"src/types",
 		"src/services/redis",
 		"src/services/db",
-		"src/services/logger"
+		"src/services/logger",
+		"src/services/workers"
 	]
 }

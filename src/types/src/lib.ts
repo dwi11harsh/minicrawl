@@ -4,6 +4,8 @@ import type {
 	ScrapeRequestType,
 } from '@mc/types';
 
+export type JobState = 'pending' | 'processing' | 'completed';
+
 export interface Metadata {
 	title?: string;
 	description?: string;
@@ -21,24 +23,33 @@ export interface ScrapeResult {
 	screenshot?: string;
 	erroredFields?: string[];
 	metadata?: string;
+	createdAt: Date;
 }
 
 export interface ScrapeJobForQueue {
 	id: string;
+	createdAt: Date;
+	status: JobState;
 	scrapeArguments: ScrapeRequestType;
 }
 
 export interface CrawlJobForQueue {
 	id: string;
+	createdAt: Date;
+	status: JobState;
 	crawlArguments: CrawlRequestSchema;
 }
 
 export interface BatchScrapeJobForQueue {
 	id: string;
+	createdAt: Date;
+	status: JobState;
 	scrapeArguments: BatchScrapeRequestSchema;
 }
 
 export interface CrawlSitemapJobForQueue {
 	id: string;
+	createdAt: Date;
+	status: JobState;
 	crawlArguments: CrawlSitemapJobForQueue;
 }

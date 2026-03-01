@@ -19,6 +19,8 @@ minicrawl/                   ← workspace root
     ├── types/               ← @mc/types (shared TypeScript types)
     └── services/
         ├── redis/           ← @mc/redis (BullMQ + ioredis)
+        ├── logger/          ← @mc/logger
+        ├── workers/         ← @mc/logger (BullMQ workers)
         └── db/              ← @mc/db    (Prisma + Postgres)
 ```
 

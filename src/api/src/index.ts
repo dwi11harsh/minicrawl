@@ -39,9 +39,10 @@ const local_redis_uri = `redis://${config.REDIS_USERNAME}:${config.REDIS_PASSWOR
 const redis_uri = config.REDIS === 'local' ? local_redis_uri : remote_redis_uri;
 
 // 3. initilize queues
+const queue_base_path = `/admin/${config.BULL_AUTH_KEY}/queue`;
 initQueues(redis_uri);
 const serverAdapter = new ExpressAdapter();
-serverAdapter.setBasePath('/admin/queue');
+serverAdapter.setBasePath(queue_base_path);
 const {} = createBullBoard({
 	queues: [
 		new BullMQAdapter(getScrapeQueue()),
@@ -66,7 +67,7 @@ app.use(
 	}),
 );
 // 6. bullMQ dashboard
-app.use(`/admin/${config.BULL_AUTH_KEY}/queue`, serverAdapter.getRouter());
+app.use(queue_base_path, serverAdapter.getRouter());
 
 // 7. set routes
 app.get('/', (req: Request, res: Response) => {
@@ -87,13 +88,16 @@ app.post('/crawl/sitemap', crawlSitemapRoute);
 const server = app.listen(Number(config.PORT), config.HOST, () => {
 	logger.info(`access minicrawl at http://${config.HOST}:${config.PORT}`);
 	logger.info(
-		`access queue dashbaord at http://${config.HOST}:${config.PORT}/admin/queue`,
+		`access queue dashbaord at http://${config.HOST}:${config.PORT}${queue_base_path}`,
 	);
+	// TODO: add logic to initialize redis and redis-insights from this repo itself
+	logger.info('access redis dashboard at http://0.0.0.0:5540');
 });
 
 // 9. graceful shutdown on signals
 const gracefulShutdown = (signal: keyof ProcessEventMap) => {
 	logger.info(`${signal} received, initialising graceful shutdown`);
+	// TODO: add logic for: stop accepting jobs, wait for running jobs and then close connections
 	closeQueues();
 	server.close();
 };
