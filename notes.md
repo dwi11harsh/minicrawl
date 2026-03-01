@@ -7,3 +7,7 @@ IMPORTANT! Eviction policy is volatile-lru. It should be "noeviction"
 ```
 
 - BullMQ and not Bull as I might wanna use `promoteJobs` in future to add priorities to queue jobs
+
+- crawl sitemap is nothing but a bunch of scrape jobs with all urls from sitemap
+
+- graceful shutdown logic should not be asynchronous

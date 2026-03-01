@@ -30,13 +30,19 @@ import { createBullBoard } from '@bull-board/api';
 import { ExpressAdapter } from '@bull-board/express';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 
-const remote_redis_uri = `redis://${config.REMOTE_REDIS_USERNAME}:${config.REMOTE_REDIS_PASSWORD}@${config.REMOTE_REDIS_HOST}:${config.REMOTE_REDIS_PORT}`;
-const redis_uri = `redis://${config.REDIS_USERNAME}:${config.REDIS_PASSWORD}@${config.REDIS_HOST}:${config.REDIS_PORT}`;
+// 1. initialize logger
+const logger = createLogger('@mc/api/index:');
 
+// 2. get redis uri
+const remote_redis_uri = `redis://${config.REMOTE_REDIS_USERNAME}:${config.REMOTE_REDIS_PASSWORD}@${config.REMOTE_REDIS_HOST}:${config.REMOTE_REDIS_PORT}`;
+const local_redis_uri = `redis://${config.REDIS_USERNAME}:${config.REDIS_PASSWORD}@${config.REDIS_HOST}:${config.REDIS_PORT}`;
+const redis_uri = config.REDIS === 'local' ? local_redis_uri : remote_redis_uri;
+
+// 3. initilize queues
 initQueues(redis_uri);
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath('/admin/queue');
-const { setQueues, replaceQueues, addQueue, removeQueue } = createBullBoard({
+const {} = createBullBoard({
 	queues: [
 		new BullMQAdapter(getScrapeQueue()),
 		new BullMQAdapter(getCrawlQueue()),
@@ -46,12 +52,12 @@ const { setQueues, replaceQueues, addQueue, removeQueue } = createBullBoard({
 	serverAdapter,
 });
 
-const logger = createLogger('@mc/api/index:');
-
+// 4. initialize express
 const app: Application = express();
 
-// middlewares
+// 5. set middlewares
 app.use(bodyParser.json());
+// to log response time and set it to the response of all routes
 app.use(
 	responseTime((req: Request, res: Response, time) => {
 		logger.log(
@@ -59,9 +65,10 @@ app.use(
 		);
 	}),
 );
-app.use('/admin/queue', serverAdapter.getRouter());
+// 6. bullMQ dashboard
+app.use(`/admin/${config.BULL_AUTH_KEY}/queue`, serverAdapter.getRouter());
 
-// routes
+// 7. set routes
 app.get('/', (req: Request, res: Response) => {
 	res.status(201).json('minicrawl is healty and live');
 });
@@ -76,7 +83,7 @@ app.post('/crawl', crawlRoute);
 
 app.post('/crawl/sitemap', crawlSitemapRoute);
 
-// server
+// 8. intialize server
 const server = app.listen(Number(config.PORT), config.HOST, () => {
 	logger.info(`access minicrawl at http://${config.HOST}:${config.PORT}`);
 	logger.info(
@@ -84,14 +91,11 @@ const server = app.listen(Number(config.PORT), config.HOST, () => {
 	);
 });
 
-// graceful shutdown on signals
+// 9. graceful shutdown on signals
 const gracefulShutdown = (signal: keyof ProcessEventMap) => {
 	logger.info(`${signal} received, initialising graceful shutdown`);
-
 	closeQueues();
 	server.close();
 };
-
-// graceful shutdown
 process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));

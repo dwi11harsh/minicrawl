@@ -8,6 +8,10 @@ dotenv.config({
 });
 
 const configSchema = z.object({
+	ENV: z.enum(['development', 'production']),
+
+	REDIS: z.enum(['local', 'remote']),
+
 	HOST: z.string().default('localhost'),
 	PORT: z.coerce.number().default(3002),
 

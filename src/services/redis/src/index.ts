@@ -82,13 +82,13 @@ const getCrawlDlq = (): Queue => {
 	return crawlDlq;
 };
 
-const closeQueues = async () => {
+const closeQueues = () => {
 	try {
 		logger.info('closing Queues');
-		await scrapeQueue?.close();
-		await crawlQueue?.close();
-		await scrapeDlq?.close();
-		await crawlDlq?.close();
+		scrapeQueue?.close();
+		crawlQueue?.close();
+		scrapeDlq?.close();
+		crawlDlq?.close();
 	} catch (err) {
 		logger.error(
 			`error occurred while closing queues: ${(err as any).message}`,
