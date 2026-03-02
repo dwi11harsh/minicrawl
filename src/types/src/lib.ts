@@ -22,7 +22,7 @@ export interface ScrapeResult {
 	discoveredUrls?: string[];
 	screenshot?: string;
 	erroredFields?: string[];
-	metadata?: string;
+	metadata?: Metadata;
 	createdAt: Date;
 }
 

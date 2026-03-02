@@ -13,3 +13,5 @@ IMPORTANT! Eviction policy is volatile-lru. It should be "noeviction"
 - graceful shutdown logic should not be asynchronous
 
 - we MUST attach an error listener to the worker. If we don't, an unhandled error event can crash the entire process and stop the worker silently.
+
+- don't add custom user agent, patchright takes care of that

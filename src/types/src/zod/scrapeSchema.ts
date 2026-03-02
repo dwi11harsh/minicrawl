@@ -12,6 +12,7 @@ import { z } from 'zod';
  * @property includeDiscoveredUrls - should response include an array of urls discovered while scraping the webpage
  * @property delay - delay between subsequent scrapes
  * @property ignoreRobotsTxt - should the scraper ignore robots.txt rules
+ * @property includeMetadata - should response contain metadata of scraped website
  */
 export const scrapeRequestSchema = z.object({
 	url: z.url().refine(val => {
@@ -30,6 +31,7 @@ export const scrapeRequestSchema = z.object({
 	includeDiscoveredUrls: z.boolean().default(false),
 	delay: z.number().min(0).max(10).optional(),
 	ignoreRobotsTxt: z.boolean().default(false),
+	includeMetadata: z.boolean().default(false),
 });
 
 export type ScrapeRequestType = z.infer<typeof scrapeRequestSchema>;
