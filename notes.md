@@ -21,3 +21,5 @@ IMPORTANT! Eviction policy is volatile-lru. It should be "noeviction"
 - try keep the actual scraper function free for most time
 
 - page content needs to be the main source of raw html in case there is some JS rendered component and in case that fails then inevitably we have to go for response.body()
+
+- in case of batch scraping from same url, we need to add random time delay between subsequent scrapes.

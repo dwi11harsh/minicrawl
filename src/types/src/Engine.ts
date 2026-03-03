@@ -44,3 +44,7 @@ export interface EngineResponse {
 export interface ScrapeEngineResponse extends EngineResponse {
 	data?: ScrapeFuncResponse;
 }
+
+export interface BatchScrapeEngineResponse extends EngineResponse {
+	data?: ScrapeFuncResponse[];
+}

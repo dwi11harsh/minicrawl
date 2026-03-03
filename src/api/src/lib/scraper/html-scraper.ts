@@ -5,7 +5,6 @@ import type {
 	ScrapeFuncResponse,
 } from '@mc/types';
 import type { Page } from 'patchright';
-import { getBrowserContext } from '../getBrowserContext';
 
 const logger = createLogger('[html scraper function]: ');
 
@@ -49,6 +48,7 @@ export const webpageScraper = async (
 				);
 				const referrer = await page.evaluate(() => document.referrer);
 				let responseHeaders: ResponseHeaders = {} as ResponseHeaders;
+				let screenshot: string | undefined = undefined;
 				try {
 					const allHeaders = await response.allHeaders();
 					const serverAddr = await response.serverAddr();
@@ -73,12 +73,18 @@ export const webpageScraper = async (
 					// page content would be the main source and response body is fallback
 					rawPageHtml = await page.content();
 					rawResponseHtml = (await response.body()).toString();
+
+					screenshot = (
+						await page.screenshot({ fullPage: true })
+					).toBase64();
 				} catch (err) {
 					// do nothing if headers could not be extracted
 					logger.error(
 						`errored while getting headers for ${url}: `,
 						(err as any).message,
 					);
+
+					// TODO: handle for page content and screenshot
 				}
 
 				// URL and headers -> data
@@ -86,9 +92,10 @@ export const webpageScraper = async (
 					url: page.url(),
 					responseHeaders,
 					rawHtml: rawPageHtml ?? rawResponseHtml,
+					screenshot,
 				};
 			} else {
-				result.error = `HTTP error: ${result.status} ${result.statusText}`;
+				result.error = `HTTP error code: ${result.status} error: ${result.statusText}`;
 			}
 		}
 	} catch (err) {
@@ -98,13 +105,3 @@ export const webpageScraper = async (
 
 	return result;
 };
-
-const browser = await getBrowserContext();
-const page = await browser.newPage();
-
-const result = await webpageScraper(page, 'https://example.com');
-
-console.log('RESULT AFTER EVERYTHING\n', result);
-
-await page.close();
-await browser.close();
