@@ -3,16 +3,9 @@ import type {
 	CrawlRequestSchema,
 	ScrapeRequestType,
 } from '@mc/types';
+import type { Metadata } from './Engine';
 
 export type JobState = 'pending' | 'processing' | 'completed';
-
-export interface Metadata {
-	title?: string;
-	description?: string;
-	images?: string;
-	language?: string;
-	keywords?: string[];
-}
 
 export interface ScrapeResult {
 	url: string;
