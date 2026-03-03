@@ -15,3 +15,9 @@ IMPORTANT! Eviction policy is volatile-lru. It should be "noeviction"
 - we MUST attach an error listener to the worker. If we don't, an unhandled error event can crash the entire process and stop the worker silently.
 
 - don't add custom user agent, patchright takes care of that
+
+- add `"dom"` to `"lib"` in `tsconfig.json` to use `document` api for browser ops
+
+- try keep the actual scraper function free for most time
+
+- page content needs to be the main source of raw html in case there is some JS rendered component and in case that fails then inevitably we have to go for response.body()

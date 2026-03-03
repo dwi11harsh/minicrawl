@@ -6,6 +6,8 @@ export interface ResponseHeaders {
 	server?: string;
 	age?: string;
 	location?: string;
+	referrer?: string;
+	charSet?: string;
 	serverAddr?: {
 		IP?: string;
 		PORT?: number;
@@ -22,11 +24,12 @@ export interface Metadata {
 
 export interface ScrapeFuncResponse {
 	url: string;
-	discoveredUrls: string[];
-	imageUrls: string[];
-	screenshot: string;
+	discoveredUrls?: string[];
+	imageUrls?: string[];
+	screenshot?: string;
 	responseHeaders?: ResponseHeaders;
 	metadata?: Metadata;
+	rawHtml?: string;
 }
 
 export interface EngineResponse {
