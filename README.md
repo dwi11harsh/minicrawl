@@ -92,3 +92,13 @@ import { db } from '@mc/db';
 // intra-package import — keep these relative
 import { scrapeHandler } from './routes/scrape';
 ```
+
+## TODO
+
+- [ ] Use Passright instead of Patchright
+
+- [ ] use a comma-separated selector with the remove() method for cheerio. For example:
+
+```ts
+$('script, style, noscript, xml').remove();
+```
