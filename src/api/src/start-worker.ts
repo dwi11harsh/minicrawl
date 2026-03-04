@@ -1,22 +1,28 @@
 #!/usr/bin/env bun
 import { config as dotenvConfig } from 'dotenv';
-import { createWorker, type WorkerType } from '@mc/workers';
-import { config } from './config';
+import { ScraperEngine } from './lib/scraper';
 
 dotenvConfig({ path: __dirname + '/.env' });
 
-const remote_redis_uri = `redis://${config.REMOTE_REDIS_USERNAME}:${config.REMOTE_REDIS_PASSWORD}@${config.REMOTE_REDIS_HOST}:${config.REMOTE_REDIS_PORT}`;
-const local_redis_uri = `redis://${config.REDIS_USERNAME}:${config.REDIS_PASSWORD}@${config.REDIS_HOST}:${config.REDIS_PORT}`;
-const redis_uri = config.REDIS === 'local' ? local_redis_uri : remote_redis_uri;
+const args = process.argv.slice(2);
 
-const workerType = (process.env.WORKER_TYPE as WorkerType) || 'scrape';
+if (args.length === 0) {
+	console.error(`[PID ${process.pid}] No arguments provided. Exiting.`);
+	process.exit(1);
+}
 
-console.log(`[PID ${process.pid}] Starting ${workerType} worker...`);
+console.log(`[PID ${process.pid}] Starting ScraperEngine for args:`, args);
 
-const worker = createWorker(workerType, redis_uri);
+for (const arg of args) {
+	ScraperEngine(arg).catch(err => {
+		console.error(
+			`[PID ${process.pid}] ScraperEngine failed for arg "${arg}":`,
+			err,
+		);
+	});
+}
 
-process.on('SIGTERM', async () => {
-	console.log(`[PID ${process.pid}] Received SIGTERM, closing worker...`);
-	await worker.close();
+process.on('SIGTERM', () => {
+	console.log(`[PID ${process.pid}] Received SIGTERM, shutting down.`);
 	process.exit(0);
 });

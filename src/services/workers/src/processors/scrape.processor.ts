@@ -5,7 +5,6 @@ const logger = createLogger('@mc/workers/scrape.processor: ');
 
 export const scrapeProcessor = async (job: Job) => {
 	logger.info(`[Scrape Processor ${job.id}]`);
-	const { scrapeJob } = job.data;
 
 	try {
 		logger.info('scrape starts: ', job.id);
