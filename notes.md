@@ -23,3 +23,13 @@ IMPORTANT! Eviction policy is volatile-lru. It should be "noeviction"
 - page content needs to be the main source of raw html in case there is some JS rendered component and in case that fails then inevitably we have to go for response.body()
 
 - in case of batch scraping from same url, we need to add random time delay between subsequent scrapes.
+
+# Cleaning HTML
+
+## Potential Problems
+
+- **Malicious Code**: `<script>` tags with inline/external JS, event handlers(`onload`, `onerror`, `onclick`, etc), `javascript:` urls in href or src, data uri containing scripts (like `data:text/html,<script>alert(1)</script>`), inline styles with expressions `expression(...)`, `<iframe>` with `src` pointing to malicious content, and maybe improper HTML with unclosed tags n all.
+
+## Potential Pipeline `mental m*st*rb****n`
+
+For now I will construct a function capable of all the features and will later add them to api, but I dont wanna come back to html pipeline again and again, will try to keep it simple and we documented coz maut ayegi dobara aane me.
