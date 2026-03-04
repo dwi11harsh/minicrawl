@@ -4,7 +4,9 @@ import type {
 	ScrapeEngineResponse,
 	ScrapeFuncResponse,
 } from '@mc/types';
+import fs from 'fs';
 import type { Page } from 'patchright';
+import { cleanHtml } from '../cleanHtml';
 
 const logger = createLogger('[html scraper function]: ');
 
@@ -19,7 +21,7 @@ export const htmlScrapeEngine = async (
 		status: 500,
 		error: undefined,
 	};
-	let data: ScrapeFuncResponse;
+	let data: ScrapeFuncResponse | undefined = undefined;
 	let rawPageHtml: string | undefined = undefined;
 	let rawResponseHtml: string | undefined = undefined;
 
@@ -101,7 +103,42 @@ export const htmlScrapeEngine = async (
 	} catch (err) {
 		result.error = (err as any).message;
 		logger.error(`${(err as any).message}`);
+	} finally {
+		if (result.success) {
+			result.data = data;
+		}
 	}
 
 	return result;
 };
+
+// const browser = await getBrowserContext();
+
+// const page = await browser.newPage();
+
+// const response = await htmlScrapeEngine(page, 'https://www.firecrawl.dev/');
+
+// await page.close();
+// await browser.close();
+
+// if (response.data) {
+// 	console.log({
+// 		img: response.data.imageUrls,
+// 		durls: response.data.discoveredUrls,
+// 		// html: response.data.rawHtml,
+// 		headers: response.data.responseHeaders,
+// 	});
+
+// 	fs.writeFileSync('index.html', response.data.rawHtml!);
+// } else {
+// 	console.log(response.error);
+// 	console.log(response.status);
+// }
+
+// process.exit(1);
+
+const rawHtml = fs.readFileSync('index.html', 'utf-8');
+
+const newhtml = cleanHtml(rawHtml, 'https://www.firecrawl.dev/');
+
+fs.writeFileSync('new.html', newhtml);
