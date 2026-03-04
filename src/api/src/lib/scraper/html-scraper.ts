@@ -8,7 +8,7 @@ import type { Page } from 'patchright';
 
 const logger = createLogger('[html scraper function]: ');
 
-export const webpageScraper = async (
+export const htmlScrapeEngine = async (
 	page: Page,
 	url: string,
 ): Promise<ScrapeEngineResponse> => {
