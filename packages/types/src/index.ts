@@ -4,6 +4,8 @@ export interface MiniResponse {
 	data?: any;
 }
 
+export type EngineType = 'browser';
+
 export interface ScrapeEngineOptions {
 	url: string;
 	includeScreenshot: boolean;
@@ -28,6 +30,7 @@ export interface ServerInfo {
 
 export interface ScrapeEngineResponse extends MiniResponse {
 	url: string;
+	status: number;
 	scrapedAt?: Date;
 	data?: {
 		html?: string;
