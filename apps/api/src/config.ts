@@ -7,7 +7,16 @@ dotenv.config({
 });
 
 const configSchema = z.object({
-	ENV: z.enum(['development', 'production']),
+	ENV: z.enum(['dev', 'prod']),
+	LOGGER_LEVEL: z.enum([
+		'error',
+		'warn',
+		'info',
+		'http',
+		'verbose',
+		'debug',
+		'silly',
+	]),
 
 	REDIS: z.enum(['local', 'remote']),
 

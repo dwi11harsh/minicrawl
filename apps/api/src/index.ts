@@ -1,13 +1,15 @@
 import bodyParser from 'body-parser';
 import express, { Application } from 'express';
+import { config } from './config';
+import { logger } from './lib/logger';
 
 const app: Application = express();
-const port = 3000;
+const port = config.PORT;
 
 app.use(bodyParser.json());
 app.disable('x-powered-by');
 
-app.get('/health', (req, res) => {
+app.get('/health', (_, res) => {
 	res.status(200).json({
 		success: true,
 		data: 'minicrawl is live',
@@ -15,5 +17,5 @@ app.get('/health', (req, res) => {
 });
 
 app.listen(port, () => {
-	console.log('server listening at ', port);
+	logger.info(`server is live at http://${config.HOST}:${port}`);
 });
