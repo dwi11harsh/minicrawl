@@ -1,0 +1,21 @@
+{
+	"name": "api",
+	"version": "0.0.0",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "",
+		"build": "next build",
+		"start": "next start",
+		"lint": "eslint --max-warnings 0",
+		"check-types": "next typegen && tsc --noEmit"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@repo/eslint-config": "*",
+		"@repo/typescript-config": "*",
+		"@types/node": "^22.15.3",
+		"eslint": "^9.39.1",
+		"typescript": "5.9.2"
+	}
+}
