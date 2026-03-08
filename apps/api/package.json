@@ -17,6 +17,7 @@
 	"devDependencies": {
 		"@repo/eslint-config": "*",
 		"@repo/engine": "*",
+		"@repo/logger": "*",
 		"@repo/types": "*",
 		"@repo/typescript-config": "*",
 		"@types/body-parser": "^1.19.6",

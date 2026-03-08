@@ -1,7 +1,7 @@
+import { logger } from '@repo/logger';
 import bodyParser from 'body-parser';
 import express, { Application } from 'express';
 import { config } from './config';
-import { logger } from './lib/logger';
 
 const app: Application = express();
 const port = config.PORT;
