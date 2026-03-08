@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"exports": {
-		"./*": "./src/*.ts",
+		"./zod": "./src/zod/index.ts",
 		".": "./src/index.ts"
 	},
 	"scripts": {
@@ -18,5 +18,7 @@
 		"eslint": "^9.39.1",
 		"typescript": "5.9.2"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"zod": "^4.3.6"
+	}
 }

@@ -2,12 +2,15 @@ import { logger } from '@repo/logger';
 import bodyParser from 'body-parser';
 import express, { Application } from 'express';
 import { config } from './config';
+import v0Router from './router/v0';
 
 const app: Application = express();
 const port = config.PORT;
 
 app.use(bodyParser.json());
 app.disable('x-powered-by');
+
+app.use(v0Router);
 
 app.get('/health', (_, res) => {
 	res.status(200).json({

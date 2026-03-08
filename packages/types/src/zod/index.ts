@@ -6,4 +6,7 @@ export const ScrapeRequestSchema = z.object({
 	includeFullScreenshot: z.boolean().default(false),
 	includeContentInfo: z.boolean().default(false),
 	includeServerInfo: z.boolean().default(false),
+	engine: z.enum(['browser']).default('browser'),
 });
+
+export type ScrapeRequestSchemaType = z.infer<typeof ScrapeRequestSchema>;

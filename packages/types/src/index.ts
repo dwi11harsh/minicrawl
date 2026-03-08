@@ -30,7 +30,7 @@ export interface ServerInfo {
 }
 
 export interface ScrapeEngineResponse extends MiniResponse {
-	url: string;
+	url?: string;
 	status: number;
 	scrapedAt?: Date;
 	data?: {
