@@ -21,5 +21,7 @@
 		"apps/*",
 		"packages/*"
 	],
-	"dependencies": {}
+	"dependencies": {
+		"dotenv": "^17.3.1"
+	}
 }
