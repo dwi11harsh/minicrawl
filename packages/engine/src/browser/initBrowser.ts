@@ -9,7 +9,7 @@ let context: BrowserContext | null = null;
 let initBrowserPromise: Promise<BrowserContext> | null = null;
 
 export const getBrowserContext = async (
-	headless: boolean = false,
+	headless: boolean = true,
 ): Promise<BrowserContext> => {
 	if (context) return context;
 

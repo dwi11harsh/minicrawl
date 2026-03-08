@@ -12,6 +12,7 @@ export interface ScrapeEngineOptions {
 	includeFullScreenshot: boolean;
 	includeContentInfo: boolean;
 	includeServerInfo: boolean;
+	browserHeadless?: boolean;
 }
 
 export interface ContentInfo {

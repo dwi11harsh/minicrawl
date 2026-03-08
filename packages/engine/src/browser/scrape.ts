@@ -19,7 +19,7 @@ export const scrapeWithBrowser = async (
 	};
 	if (!page) {
 		try {
-			const context = await getBrowserContext();
+			const context = await getBrowserContext(arg.browserHeadless);
 			page = await context.newPage();
 		} catch (e) {
 			logger.error('error initializing new browser-page');
