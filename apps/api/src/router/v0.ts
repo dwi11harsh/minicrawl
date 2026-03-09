@@ -1,5 +1,5 @@
 import express from 'express';
-import { V0Scrape } from '../routes';
+import { V0BatchScrape, V0Scrape } from '../routes';
 
 const v0Router = express.Router();
 
@@ -8,5 +8,7 @@ v0Router.get('/', (_, res) => {
 });
 
 v0Router.post('/scrape', V0Scrape);
+
+v0Router.post('/scrape/batch', V0BatchScrape);
 
 export default v0Router;

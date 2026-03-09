@@ -10,3 +10,16 @@ export const ScrapeRequestSchema = z.object({
 });
 
 export type ScrapeRequestSchemaType = z.infer<typeof ScrapeRequestSchema>;
+
+export const BatchScrapeRequestSchema = z.object({
+	urls: z.array(z.url()),
+	includeScreenshot: z.boolean().default(false),
+	includeFullScreenshot: z.boolean().default(false),
+	includeContentInfo: z.boolean().default(false),
+	includeServerInfo: z.boolean().default(false),
+	engine: z.enum(['browser']).default('browser'),
+});
+
+export type BatchScrapeRequestSchemaType = z.infer<
+	typeof BatchScrapeRequestSchema
+>;
