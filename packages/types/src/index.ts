@@ -52,7 +52,12 @@ export interface CleanHtmlOptions {
 	 */
 	keepTags: string[];
 	removeTags: string[];
-	extractMetadata: boolean;
-	extractImages: boolean;
-	extractLinks: boolean;
+}
+
+export interface Metadata {
+	title?: string;
+	description?: string;
+	images?: string;
+	language?: string;
+	keywords?: string[];
 }

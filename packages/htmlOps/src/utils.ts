@@ -1,4 +1,9 @@
 import * as cheerio from 'cheerio';
+import type { Element } from 'domhandler';
+import {
+	htmlEventHandlersStringNoBrackets,
+	htmlEventHandlersStringWithBrackets,
+} from './htmlEventHandlers';
 
 export const checkValidUrl = (url: string | undefined): boolean => {
 	if (url) {
@@ -56,5 +61,46 @@ export const removeTags = ({
 
 	if (removeTags && removeTags.length > 0) {
 	}
+	return $;
+};
+
+export const sanitizeAttributes = ($: cheerio.CheerioAPI) => {
+	// attributes to remove
+	const dangerousSchemes: string[] = ['javascript:', 'data:', 'vbscript:'];
+
+	$('*').each(function () {
+		if (
+			this.type !== 'tag' &&
+			this.type !== 'script' &&
+			this.type !== 'style'
+		)
+			return; // narrow down to Element
+		const el = this as Element;
+		const $el = $(el);
+		const attribs = el.attribs; // safe to access now
+
+		// check all attributes of this element
+		Object.keys(attribs || {}).forEach(attrName => {
+			const attrValue = $el.attr(attrName);
+
+			if (attrValue) {
+				// Check if attribute contains any dangerous scheme
+				const hasDangerousScheme = dangerousSchemes.some(scheme =>
+					attrValue.toLowerCase().includes(scheme),
+				);
+
+				if (hasDangerousScheme) {
+					// Remove the entire attribute
+					$el.removeAttr(attrName);
+				}
+			}
+		});
+	});
+
+	// remove event handlers
+	$(htmlEventHandlersStringWithBrackets).removeAttr(
+		htmlEventHandlersStringNoBrackets,
+	);
+
 	return $;
 };

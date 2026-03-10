@@ -1,11 +1,20 @@
-import type { CleanHtmlOptions } from '@repo/types';
+import type { CleanHtmlOptions, Metadata } from '@repo/types';
 import * as cheerio from 'cheerio';
-import { checkValidUrl, removeTags, whichToRemove } from './utils';
+import {
+	checkValidUrl,
+	removeTags,
+	sanitizeAttributes,
+	whichToRemove,
+} from './utils';
 
 class HtmlOps {
 	private $: cheerio.CheerioAPI;
 	private baseUrl: URL; // this will be detected from <base> later
 	private ops: CleanHtmlOptions;
+	private cleanedHtml: string | null = null;
+	private metadata: Metadata | null = null;
+	private images: string[] | null = null;
+	private urls: string[] | null = null;
 
 	// these tags are to be always removed
 	private alwaysRemove: string[] = [
@@ -17,9 +26,6 @@ class HtmlOps {
 		'doctype',
 	];
 
-	// attributes to remove
-	private dangerousSchemes: string[] = ['javascript:', 'data:', 'vbscript:'];
-
 	constructor(rawHtml: string, options: CleanHtmlOptions) {
 		this.$ = cheerio.load(rawHtml, {
 			baseURI: options.baseUrl,
@@ -28,15 +34,17 @@ class HtmlOps {
 		this.ops = options;
 	}
 
-	public clean = () => {
+	public clean = (): string => {
 		const baseUrl = this._resolveBaseUrl();
 		if (baseUrl) {
 			this.baseUrl = new URL(baseUrl);
 		}
-
 		this._removeUnwanted();
-
 		// remove malicious schemes and event handlers
+		this.$ = sanitizeAttributes(this.$);
+		this.cleanedHtml = this.$.html();
+
+		return this.cleanedHtml;
 	};
 
 	public _resolveBaseUrl = () => {
@@ -75,9 +83,3 @@ class HtmlOps {
 		return;
 	};
 }
-
-export const sanitize = ($: cheerio.CheerioAPI) => {
-	$('*').each(function () {
-		const $el = $(this);
-	});
-};
