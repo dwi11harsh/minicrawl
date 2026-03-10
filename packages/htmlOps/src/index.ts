@@ -11,10 +11,10 @@ class HtmlOps {
 	private $: cheerio.CheerioAPI;
 	private baseUrl: URL; // this will be detected from <base> later
 	private ops: CleanHtmlOptions;
-	private cleanedHtml: string | null = null;
-	private metadata: Metadata | null = null;
-	private images: string[] | null = null;
-	private urls: string[] | null = null;
+	public cleanedHtml: string | null = null;
+	public metadata: Metadata | null = null;
+	public images: string[] | null = null;
+	public urls: string[] | null = null;
 
 	// these tags are to be always removed
 	private alwaysRemove: string[] = [
@@ -45,6 +45,49 @@ class HtmlOps {
 		this.cleanedHtml = this.$.html();
 
 		return this.cleanedHtml;
+	};
+
+	public getMetadata = (): Metadata | null => {
+		const metaTitle = this.$('meta[name="title"]').attr('content');
+		const ogTitle = this.$('meta[property="og:title"]').attr('content');
+
+		const ogDescription = this.$('meta[name="description"]').attr(
+			'content',
+		);
+		const metaImages = this.$.extract({
+			ogImage: {
+				selector: 'meta[property="og:image"]',
+				value: 'content',
+			},
+			twitterImage: {
+				selector: 'meta[name="twitter:image"]',
+				value: 'content',
+			},
+			ogImageSecure: {
+				selector: 'meta[property="og:image:secure_url"]',
+				value: 'content',
+			},
+			ogImageUrl: {
+				selector: 'meta[property="og:image:url"]',
+				value: 'content',
+			},
+			twitterImageSrc: {
+				selector: 'meta[name="twitter:image:src"]',
+				value: 'content',
+			},
+		});
+		const lang = this.$('html').attr('lang')?.toString();
+
+		const keywords = this.$('meta[name="keywords"]').attr('content');
+
+		this.metadata = {
+			title: metaTitle ? metaTitle : ogTitle,
+			description: ogDescription,
+			language: lang,
+			keywords: keywords,
+			images: metaImages,
+		};
+		return this.metadata;
 	};
 
 	public _resolveBaseUrl = () => {

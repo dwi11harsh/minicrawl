@@ -57,7 +57,7 @@ export interface CleanHtmlOptions {
 export interface Metadata {
 	title?: string;
 	description?: string;
-	images?: string;
+	images?: any;
 	language?: string;
-	keywords?: string[];
+	keywords?: string;
 }
