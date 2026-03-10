@@ -1,4 +1,10 @@
+import dotenv from 'dotenv';
+import path from 'path';
 import z from 'zod';
+
+dotenv.config({
+	path: path.join(__dirname, '../../../../.env'),
+});
 
 export const ScrapeRequestSchema = z.object({
 	url: z.url({
@@ -52,3 +58,23 @@ export const BatchScrapeRequestSchema = z.object({
 export type BatchScrapeRequestSchemaType = z.infer<
 	typeof BatchScrapeRequestSchema
 >;
+
+const globalEnvSchema = z.object({
+	LOGGER_LEVEL: z.enum([
+		'error',
+		'warn',
+		'info',
+		'http',
+		'verbose',
+		'debug',
+		'silly',
+	]),
+	REDIS_PORT: z.coerce.number(),
+	REDIS_HOST: z.string(),
+	REDIS_USERNAME: z.string(),
+	REDIS_PASSWORD: z.string(),
+
+	BULL_AUTH_KEY: z.string(),
+});
+
+export const globalEnv = globalEnvSchema.parse(process.env);

@@ -40,5 +40,3 @@ const configSchema = z.object({
 });
 
 export const config = configSchema.parse(process.env);
-
-console.log(process.env.HOST);

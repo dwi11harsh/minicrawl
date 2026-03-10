@@ -101,6 +101,19 @@
         "typescript": "5.9.2",
       },
     },
+    "packages/redis": {
+      "name": "@repo/redis",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@repo/eslint-config": "*",
+        "@repo/logger": "*",
+        "@repo/types": "*",
+        "@repo/typescript-config": "*",
+        "@types/node": "^22.15.3",
+        "eslint": "^9.39.1",
+        "typescript": "5.9.2",
+      },
+    },
     "packages/robots": {
       "name": "@repo/robots",
       "version": "0.0.0",
@@ -199,6 +212,8 @@
     "@repo/htmlops": ["@repo/htmlops@workspace:packages/htmlOps"],
 
     "@repo/logger": ["@repo/logger@workspace:packages/logger"],
+
+    "@repo/redis": ["@repo/redis@workspace:packages/redis"],
 
     "@repo/robots": ["@repo/robots@workspace:packages/robots"],
 
