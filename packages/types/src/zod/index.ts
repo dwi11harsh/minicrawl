@@ -75,6 +75,8 @@ const globalEnvSchema = z.object({
 	REDIS_USERNAME: z.string(),
 	REDIS_PASSWORD: z.string(),
 
+	EACH_QUEUE_SIZE: z.coerce.number(),
+
 	BULL_AUTH_KEY: z.string(),
 });
 
