@@ -40,3 +40,19 @@ export interface ScrapeEngineResponse extends MiniResponse {
 		serverInfo?: ServerInfo;
 	};
 }
+
+export interface CleanHtmlOptions {
+	baseUrl: string;
+	/**
+	 * if keepOnlyTags is given an array of tags then removeTags and rest of tags won't be considered and all other tags will be removed
+	 */
+	keepOnlyTags: string[];
+	/**
+	 * keepTags will be removed from the list of tags which are about to be removed for sanitization
+	 */
+	keepTags: string[];
+	removeTags: string[];
+	extractMetadata: boolean;
+	extractImages: boolean;
+	extractLinks: boolean;
+}

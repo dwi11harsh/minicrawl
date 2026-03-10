@@ -19,6 +19,7 @@
 		"typescript": "5.9.2"
 	},
 	"dependencies": {
-		"@repo/logger": "*"
+		"@repo/logger": "*",
+		"cheerio": "^1.2.0"
 	}
 }
