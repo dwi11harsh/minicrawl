@@ -12,14 +12,17 @@
 	},
 	"devDependencies": {
 		"@repo/eslint-config": "*",
-		"@repo/typescript-config": "*",
 		"@repo/types": "*",
+		"@repo/typescript-config": "*",
 		"@types/node": "^22.15.3",
+		"@types/turndown": "^5.0.6",
 		"eslint": "^9.39.1",
 		"typescript": "5.9.2"
 	},
 	"dependencies": {
 		"@repo/logger": "*",
-		"cheerio": "^1.2.0"
+		"@xmldom/xmldom": "^0.8.11",
+		"cheerio": "^1.2.0",
+		"turndown": "^7.2.2"
 	}
 }

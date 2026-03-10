@@ -1,5 +1,7 @@
 import type { CleanHtmlOptions, Metadata } from '@repo/types';
 import * as cheerio from 'cheerio';
+import TurndownService from 'turndown';
+import { HTMLToJsonParser, JSONContent } from './html2json';
 import {
 	checkValidUrl,
 	removeTags,
@@ -7,7 +9,7 @@ import {
 	whichToRemove,
 } from './utils';
 
-class HtmlOps {
+export class HtmlOps {
 	private $: cheerio.CheerioAPI;
 	private baseUrl: URL; // this will be detected from <base> later
 	private ops: CleanHtmlOptions;
@@ -153,5 +155,26 @@ class HtmlOps {
 		}
 
 		return this.urls;
+	};
+
+	public getJson = async (): Promise<JSONContent | string | null> => {
+		if (this.cleanedHtml) {
+			const json = await HTMLToJsonParser(this.cleanedHtml, true);
+
+			if (json) {
+				return json;
+			}
+		}
+		return null;
+	};
+
+	public getMarkdown = (): string | null => {
+		if (this.cleanedHtml) {
+			const turndown = new TurndownService();
+			const mkd = turndown.turndown(this.cleanedHtml);
+			return mkd;
+		}
+
+		return null;
 	};
 }
