@@ -6,6 +6,32 @@ dotenv.config({
 	path: path.join(__dirname, '../../../../.env'),
 });
 
+const globalEnvSchema = z.object({
+	ENV: z.enum(['dev', 'prod']),
+	LOGGER_LEVEL: z.enum([
+		'error',
+		'warn',
+		'info',
+		'http',
+		'verbose',
+		'debug',
+		'silly',
+	]),
+	REDIS_PORT: z.coerce.number(),
+	REDIS_HOST: z.string(),
+	REDIS_USERNAME: z.string(),
+	REDIS_PASSWORD: z.string(),
+
+	EACH_QUEUE_SIZE: z.coerce.number(),
+
+	BULL_AUTH_KEY: z.string(),
+
+	PORT: z.coerce.number(),
+	HOST: z.string(),
+});
+
+export const globalEnv = globalEnvSchema.parse(process.env);
+
 export const ScrapeRequestSchema = z.object({
 	url: z.url({
 		error: 'url: must be a valid URL (e.g. https://example.com)',
@@ -142,26 +168,3 @@ export const CrawlRequestSchema = z.object({
 });
 
 export type CrawlRequestSchemaType = z.infer<typeof CrawlRequestSchema>;
-
-const globalEnvSchema = z.object({
-	ENV: z.enum(['dev', 'prod']),
-	LOGGER_LEVEL: z.enum([
-		'error',
-		'warn',
-		'info',
-		'http',
-		'verbose',
-		'debug',
-		'silly',
-	]),
-	REDIS_PORT: z.coerce.number(),
-	REDIS_HOST: z.string(),
-	REDIS_USERNAME: z.string(),
-	REDIS_PASSWORD: z.string(),
-
-	EACH_QUEUE_SIZE: z.coerce.number(),
-
-	BULL_AUTH_KEY: z.string(),
-});
-
-export const globalEnv = globalEnvSchema.parse(process.env);

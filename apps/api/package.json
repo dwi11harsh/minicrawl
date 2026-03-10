@@ -10,6 +10,12 @@
 		"check-types": "tsc --noEmit"
 	},
 	"dependencies": {
+		"@repo/engine": "*",
+		"@repo/logger": "*",
+		"@repo/redis": "*",
+		"@repo/types": "*",
+		"@bull-board/api": "^6.20.3",
+		"@bull-board/express": "^6.20.3",
 		"@types/response-time": "^2.3.9",
 		"body-parser": "^2.2.2",
 		"express": "^5.2.1",
@@ -18,9 +24,6 @@
 	},
 	"devDependencies": {
 		"@repo/eslint-config": "*",
-		"@repo/engine": "*",
-		"@repo/logger": "*",
-		"@repo/types": "*",
 		"@repo/typescript-config": "*",
 		"@types/body-parser": "^1.19.6",
 		"@types/express": "^5.0.6",
