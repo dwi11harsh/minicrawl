@@ -60,6 +60,7 @@ export type BatchScrapeRequestSchemaType = z.infer<
 >;
 
 const globalEnvSchema = z.object({
+	ENV: z.enum(['dev', 'prod']),
 	LOGGER_LEVEL: z.enum([
 		'error',
 		'warn',

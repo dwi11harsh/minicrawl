@@ -1,3 +1,4 @@
+import { globalEnv } from '@repo/types/zod';
 import dotenv from 'dotenv';
 import path from 'path';
 import winston from 'winston';
@@ -6,7 +7,8 @@ dotenv.config({
 	path: path.join(__dirname, '../../.env'),
 });
 
-const logLevel = process.env.LOGGER_LEVEL!;
+const logLevel = globalEnv.LOGGER_LEVEL;
+const env = globalEnv.ENV;
 
 const devFormat = winston.format.combine(
 	winston.format.colorize(),
@@ -23,6 +25,6 @@ const prodFormat = winston.format.json();
 
 export const logger = winston.createLogger({
 	level: logLevel,
-	format: logLevel === 'dev' ? devFormat : prodFormat,
+	format: env === 'dev' ? devFormat : prodFormat,
 	transports: [new winston.transports.Console()],
 });
