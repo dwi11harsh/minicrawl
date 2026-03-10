@@ -121,6 +121,12 @@ export const CrawlRequestSchema = z.object({
 			fullScreenshot: z.boolean({
 				error: 'scraperOptions.fullScreenshot: must be true or false',
 			}),
+			includeContentInfo: z.boolean({
+				error: 'includeContentInfo: must be true or false',
+			}),
+			includeServerInfo: z.boolean({
+				error: 'includeServerInfo: must be true or false',
+			}),
 		})
 		.default({
 			engine: 'browser',
@@ -130,6 +136,8 @@ export const CrawlRequestSchema = z.object({
 			includeImageLinks: true,
 			screenshot: false,
 			fullScreenshot: false,
+			includeContentInfo: false,
+			includeServerInfo: false,
 		}),
 });
 
