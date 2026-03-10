@@ -102,3 +102,5 @@ import { scrapeHandler } from './routes/scrape';
 ```ts
 $('script, style, noscript, xml').remove();
 ```
+
+- [ ] write a separate worker in Python to parse html

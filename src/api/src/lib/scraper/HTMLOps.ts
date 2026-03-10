@@ -84,7 +84,7 @@ class HTMLOps {
 	/**
 	 * Removes event handlers & javascript: URLs
 	 */
-	private sanitizeAttributes() {
+	private _sanitizeAttributes() {
 		const $ = this.ch;
 		const dangerousSchemes = ['javascript:', 'data:', 'vbscript:'];
 		const urlAttributes = ['href', 'src', 'poster', 'action', 'formaction'];
@@ -93,12 +93,16 @@ class HTMLOps {
 		$('*').each((_, el) => {
 			// Only process element nodes (tags)
 			if (el.type !== 'tag') return;
-			// Get all attribute names safely
+
+			// get all attribute names
 			const attribs = $(el).prop('attribs') as
 				| Record<string, string>
 				| undefined;
+
 			if (!attribs) return;
+
 			Object.keys(attribs).forEach(attr => {
+				// all event listener starts with 'on', remove them
 				if (attr.toLowerCase().startsWith('on')) {
 					$(el).removeAttr(attr);
 				}
@@ -120,8 +124,26 @@ class HTMLOps {
 			});
 		});
 
-		// 3. Remove inline styles (optional – can be replaced with CSS sanitizer)
+		// 3. Remove inline styles as well
 		$('[style]').removeAttr('style');
+	}
+
+	/**
+	 * Resolves relative URLs in href, src and srcset
+	 */
+	private _resolveUrls() {
+		const resolve = (url: string): string => {
+			try {
+				return new URL(url, this.baseUrl).toString();
+			} catch {
+				// keep original if invalid
+				return url;
+			}
+		};
+
+		this.ch('[href], [src], [poster]').each((_, el) => {
+			const relativeUrl = this.ch(el).attr('href');
+		});
 	}
 }
 
