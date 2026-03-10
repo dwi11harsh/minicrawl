@@ -8,7 +8,6 @@ import {
 import { Page, Response } from 'patchright';
 import { getBrowserContext } from './initBrowser';
 
-let page: Page | null = null;
 export const scrapeWithBrowser = async (
 	arg: ScrapeEngineOptions,
 ): Promise<ScrapeEngineResponse> => {
@@ -17,6 +16,7 @@ export const scrapeWithBrowser = async (
 		success: false,
 		status: 500,
 	};
+	let page: Page | null = null;
 	if (!page) {
 		try {
 			const context = await getBrowserContext(arg.browserHeadless);
@@ -67,6 +67,9 @@ export const scrapeWithBrowser = async (
 		result.error = (err as any).message;
 		logger.error(`Error getting response: ${(err as any).toString()}`);
 	}
+
+	await page.close();
+	page = null;
 
 	return result;
 };
