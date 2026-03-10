@@ -12,7 +12,10 @@ export const createBullMQ = <QueueType>(
 		? queueJobOptions
 		: {
 				attempts: retry,
-				removeOnComplete: true,
+				removeOnComplete: {
+					age: 30 * 60, // 30 minutes
+					count: 100, // drop oldest beyond this when queue is overloaded
+				},
 				removeOnFail: false,
 				sizeLimit: globalEnv.EACH_QUEUE_SIZE * 1024 * 1024,
 				// priority: 0
