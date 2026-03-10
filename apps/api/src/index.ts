@@ -14,6 +14,7 @@ import bodyParser from 'body-parser';
 import express, { Application } from 'express';
 import responseTime from 'response-time';
 import v0Router from './router/v0';
+import v1Router from './router/v1';
 
 const queueBasePath = `/admin/${globalEnv.BULL_AUTH_KEY}/queue`;
 
@@ -42,7 +43,9 @@ app.use(
 app.disable('x-powered-by');
 
 app.use(queueBasePath, serverAdapter.getRouter());
+
 app.use(v0Router);
+app.use(v1Router);
 
 app.get('/health', (_, res) => {
 	res.status(200).json({

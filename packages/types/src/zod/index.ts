@@ -51,6 +51,11 @@ export const ScrapeRequestSchema = z.object({
 	engine: z
 		.enum(['browser'], { error: "engine: must be one of 'browser'" })
 		.default('browser'),
+	headers: z.record(z.string(), z.string()).optional(),
+	timeout: z.number().optional(),
+	includeMetadata: z.boolean().default(false),
+	includeLinks: z.boolean().default(false),
+	includeImageLinks: z.boolean().default(false),
 });
 
 export type ScrapeRequestSchemaType = z.infer<typeof ScrapeRequestSchema>;

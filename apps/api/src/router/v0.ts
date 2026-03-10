@@ -3,7 +3,7 @@ import { V0BatchScrape, V0Scrape } from '../routes';
 
 const v0Router = express.Router();
 
-v0Router.get('/', (_, res) => {
+v0Router.get('/health', (_, res) => {
 	res.status(200).json({ data: 'v0 is alive' });
 });
 
