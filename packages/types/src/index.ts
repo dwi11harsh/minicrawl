@@ -1,3 +1,9 @@
+import {
+	BatchScrapeRequestSchemaType,
+	CrawlRequestSchemaType,
+	ScrapeRequestSchemaType,
+} from './zod';
+
 export interface MiniResponse {
 	success: boolean;
 	error?: string;
@@ -5,6 +11,8 @@ export interface MiniResponse {
 }
 
 export type EngineType = 'browser';
+
+export type JobState = 'pending' | 'processing' | 'completed' | 'errored';
 
 export interface ScrapeEngineOptions {
 	url: string;
@@ -60,4 +68,22 @@ export interface Metadata {
 	images?: any;
 	language?: string;
 	keywords?: string;
+}
+
+export interface QueueJobType {
+	jobId: string;
+	createdAt: Date;
+	status: JobState;
+}
+
+export interface ScrapeDlqJob extends QueueJobType {
+	args: ScrapeRequestSchemaType;
+}
+
+export interface BatchScrapeJob extends QueueJobType {
+	args: BatchScrapeRequestSchemaType;
+}
+
+export interface CrawlJob extends QueueJobType {
+	args: CrawlRequestSchemaType;
 }

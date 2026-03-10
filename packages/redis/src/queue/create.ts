@@ -3,11 +3,11 @@ import { globalEnv } from '@repo/types/zod';
 import { Queue, QueueOptions } from 'bullmq';
 import { getRedisConnection } from '../index';
 
-export const createBullMQ = (
+export const createBullMQ = <QueueType>(
 	name: string,
 	retry: number,
 	queueJobOptions?: QueueOptions['defaultJobOptions'],
-): Queue => {
+): Queue<QueueType> => {
 	const defaultJobOptions: QueueOptions['defaultJobOptions'] = queueJobOptions
 		? queueJobOptions
 		: {
@@ -18,7 +18,7 @@ export const createBullMQ = (
 				// priority: 0
 			};
 	logger.info('Creating BullMQ: ', name);
-	return new Queue(name, {
+	return new Queue<QueueType>(name, {
 		connection: getRedisConnection(),
 		defaultJobOptions,
 	});
