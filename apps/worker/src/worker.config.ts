@@ -10,6 +10,9 @@ export const workerConfig = {
 			autorun: true,
 			useWorkerThreads: false,
 		},
+		minWorkers: 1,
+		maxWorkers: 3,
+		concurrencyPerWorker: 3,
 	},
 
 	crawl: {
@@ -21,6 +24,9 @@ export const workerConfig = {
 			autorun: true,
 			useWorkerThreads: false,
 		},
+		minWorkers: 1,
+		maxWorkers: 3,
+		concurrencyPerWorker: 3,
 	},
 	scrapeDl: {
 		queueName: queueConfig.scrapeDlqConf.name,
@@ -31,5 +37,8 @@ export const workerConfig = {
 			autorun: true,
 			useWorkerThreads: false,
 		},
+		minWorkers: 1,
+		maxWorkers: 3,
+		concurrencyPerWorker: 3,
 	},
 } as const;
