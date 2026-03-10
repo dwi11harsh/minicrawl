@@ -1,9 +1,9 @@
 {
-	"name": "@repo/logger",
+	"name": "@repo/htmlops",
 	"version": "0.0.0",
 	"private": true,
 	"exports": {
-		".": "./logger.ts"
+		".": "./src/index.ts"
 	},
 	"scripts": {
 		"lint": "eslint . --max-warnings 0",
@@ -13,11 +13,12 @@
 	"devDependencies": {
 		"@repo/eslint-config": "*",
 		"@repo/typescript-config": "*",
+		"@repo/types": "*",
 		"@types/node": "^22.15.3",
 		"eslint": "^9.39.1",
 		"typescript": "5.9.2"
 	},
 	"dependencies": {
-		"winston": "^3.19.0"
+		"@repo/logger": "*"
 	}
 }
