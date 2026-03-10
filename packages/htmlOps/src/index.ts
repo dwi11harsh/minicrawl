@@ -13,8 +13,8 @@ class HtmlOps {
 	private ops: CleanHtmlOptions;
 	public cleanedHtml: string | null = null;
 	public metadata: Metadata | null = null;
-	public images: string[] | null = null;
-	public urls: string[] | null = null;
+	public images: string[] = [];
+	public urls: string[] = [];
 
 	// these tags are to be always removed
 	private alwaysRemove: string[] = [
@@ -45,6 +45,42 @@ class HtmlOps {
 		this.cleanedHtml = this.$.html();
 
 		return this.cleanedHtml;
+	};
+
+	public _resolveBaseUrl = () => {
+		// <base `href`>
+		const baseHref = this.$('base').attr('href');
+		if (checkValidUrl(baseHref)) return baseHref;
+
+		// <meta property="og:url" `content`>
+		const metaHref = this.$('meta[property="og:url"]').attr('content');
+		if (checkValidUrl(metaHref)) return metaHref;
+
+		// baseUrl
+		return this.baseUrl;
+	};
+
+	public _removeUnwanted = () => {
+		// if keepOnly
+		if (this.ops.keepOnlyTags && this.ops.keepOnlyTags.length > 0) {
+			this.$ = removeTags({
+				$: this.$,
+				keepTags: this.ops.keepOnlyTags,
+			});
+			return;
+		}
+
+		const tagsToRemove: string[] = whichToRemove({
+			keepTags: this.ops.keepTags,
+			removeTags: this.ops.removeTags,
+			alwaysRemove: this.alwaysRemove,
+		});
+
+		this.$ = removeTags({
+			$: this.$,
+			removeTags: tagsToRemove,
+		});
+		return;
 	};
 
 	public getMetadata = (): Metadata | null => {
@@ -90,39 +126,32 @@ class HtmlOps {
 		return this.metadata;
 	};
 
-	public _resolveBaseUrl = () => {
-		// <base `href`>
-		const baseHref = this.$('base').attr('href');
-		if (checkValidUrl(baseHref)) return baseHref;
+	public getImageUrls = (): string[] => {
+		const urls = this.$.extract({
+			images: [{ selector: 'img[src]', value: 'src' }],
+		});
 
-		// <meta property="og:url" `content`>
-		const metaHref = this.$('meta[property="og:url"]').attr('content');
-		if (checkValidUrl(metaHref)) return metaHref;
-
-		// baseUrl
-		return this.baseUrl;
-	};
-
-	public _removeUnwanted = () => {
-		// if keepOnly
-		if (this.ops.keepOnlyTags && this.ops.keepOnlyTags.length > 0) {
-			this.$ = removeTags({
-				$: this.$,
-				keepTags: this.ops.keepOnlyTags,
-			});
-			return;
+		for (const url of urls.images) {
+			if (url.startsWith('http')) this.images.push(url);
 		}
 
-		const tagsToRemove: string[] = whichToRemove({
-			keepTags: this.ops.keepTags,
-			removeTags: this.ops.removeTags,
-			alwaysRemove: this.alwaysRemove,
+		return this.images;
+	};
+
+	public getAllUrls = (): string[] => {
+		const allUrls = this.$.extract({
+			images: [{ selector: 'img[src]', value: 'src' }],
+			links: [{ selector: 'a[href]', value: 'href' }],
 		});
 
-		this.$ = removeTags({
-			$: this.$,
-			removeTags: tagsToRemove,
-		});
-		return;
+		for (const url of allUrls.images) {
+			if (url.startsWith('http')) this.urls.push(url);
+		}
+
+		for (const url of allUrls.links) {
+			if (url.startsWith('http')) this.urls.push(url);
+		}
+
+		return this.urls;
 	};
 }
