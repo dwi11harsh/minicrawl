@@ -10,16 +10,17 @@
 		"check-types": "tsc --noEmit"
 	},
 	"dependencies": {
+		"@bull-board/api": "^6.20.3",
+		"@bull-board/express": "^6.20.3",
 		"@repo/engine": "*",
 		"@repo/logger": "*",
 		"@repo/redis": "*",
 		"@repo/types": "*",
-		"@bull-board/api": "^6.20.3",
-		"@bull-board/express": "^6.20.3",
 		"@types/response-time": "^2.3.9",
 		"body-parser": "^2.2.2",
 		"express": "^5.2.1",
 		"response-time": "^2.3.4",
+		"uuid": "^13.0.0",
 		"winston": "^3.19.0"
 	},
 	"devDependencies": {

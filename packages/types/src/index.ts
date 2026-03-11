@@ -4,6 +4,8 @@ import {
 	ScrapeRequestSchemaType,
 } from './zod';
 
+export * from './workerPool';
+
 export interface MiniResponse {
 	success: boolean;
 	error?: string;
